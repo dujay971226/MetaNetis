@@ -1,16 +1,21 @@
 Package: MetaNetis
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Pathway activity networks analysis based on metabolite abundance.
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "Jay", "Du",
+      email = "yunze.du@mail.utoronto.ca",
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Description: R package for visualizing pathway–pathway networks and analyzing pathway activity from metabolite abundance data.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: 
+    R (>= 3.5.0)
+RoxygenNote: 7.3.3
+Imports: 
+    dplyr,
+    KEGGREST
