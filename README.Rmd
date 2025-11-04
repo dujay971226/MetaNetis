@@ -42,7 +42,7 @@ The package's core value lies in its ability to generate high-confidence classif
 
 Critically, MetaNetis offers robust functionality to evaluate quantitative, clinical sampled data such as blood and urine. This capability is a key differentiator from existing tools; for instance, popular platforms like MetaboAnalyst are often restricted to qualitative analysis, relying solely on pathway enrichment. MetaNetis moves beyond simple enrichment to provide a direct, directional assessment of metabolic activity (e.g., hyper- or hypo-regulation), making it a powerful tool for metabolomic and clinical research.
 
-![MetaNetis Package Overview](vignette/package_overview.png)
+![MetaNetis Package Overview](vignettes/package_overview.png)
 
 ### ✨ Features
 

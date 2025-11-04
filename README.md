@@ -37,12 +37,12 @@ Development for $\text{MetaNetis}$ was conducted on version 4.5.1
 
     ``` r
     install.packages("devtools")
-    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/RtmpiUzxia/temp_libpath2b9847a946af'
+    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/RtmpQHqxXd/temp_libpath566078438da'
     #> (as 'lib' is unspecified)
     #> package 'devtools' successfully unpacked and MD5 sums checked
     #> 
     #> The downloaded binary packages are in
-    #>  C:\Users\dujay\AppData\Local\Temp\Rtmpuk5maa\downloaded_packages
+    #>  C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\downloaded_packages
     library("devtools")
     #> Warning: package 'devtools' was built under R version 4.5.2
     #> Loading required package: usethis
@@ -50,46 +50,34 @@ Development for $\text{MetaNetis}$ was conducted on version 4.5.1
     #> Using GitHub PAT from the git credential store.
     #> Downloading GitHub repo dujay971226/MetaNetis@HEAD
     #> magrittr (2.0.3 -> 2.0.4) [CRAN]
-    #> stringr  (1.5.2 -> 1.6.0) [CRAN]
     #> purrr    (1.1.0 -> 1.2.0) [CRAN]
-    #> Installing 3 packages: magrittr, stringr, purrr
-    #> Installing packages into 'C:/Users/dujay/AppData/Local/Temp/RtmpiUzxia/temp_libpath2b9847a946af'
+    #> Installing 2 packages: magrittr, purrr
+    #> Installing packages into 'C:/Users/dujay/AppData/Local/Temp/RtmpQHqxXd/temp_libpath566078438da'
     #> (as 'lib' is unspecified)
     #> 
-    #>   There are binary versions available but the source versions are later:
-    #>         binary source needs_compilation
-    #> stringr  1.5.2  1.6.0             FALSE
-    #> purrr    1.1.0  1.2.0              TRUE
+    #>   There is a binary version available but the source version is later:
+    #>       binary source needs_compilation
+    #> purrr  1.1.0  1.2.0              TRUE
     #> 
     #> package 'magrittr' successfully unpacked and MD5 sums checked
     #> 
     #> The downloaded binary packages are in
-    #>  C:\Users\dujay\AppData\Local\Temp\Rtmpuk5maa\downloaded_packages
-    #> installing the source packages 'stringr', 'purrr'
+    #>  C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\downloaded_packages
+    #> installing the source package 'purrr'
     #> ── R CMD build ─────────────────────────────────────────────────────────────────
-    #>          checking for file 'C:\Users\dujay\AppData\Local\Temp\Rtmpuk5maa\remotes5a444f143b4b\dujay971226-MetaNetis-7cc8edb/DESCRIPTION' ...  ✔  checking for file 'C:\Users\dujay\AppData\Local\Temp\Rtmpuk5maa\remotes5a444f143b4b\dujay971226-MetaNetis-7cc8edb/DESCRIPTION'
+    #>          checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\remotes25245d0a125b\dujay971226-MetaNetis-44f53fa/DESCRIPTION' ...  ✔  checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\remotes25245d0a125b\dujay971226-MetaNetis-44f53fa/DESCRIPTION'
     #>       ─  preparing 'MetaNetis':
     #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
     #>       ─  installing the package to build vignettes
-    #>          creating vignettes ...     creating vignettes ...   ✔  creating vignettes (12.2s)
-    #>       ─  checking for LF line-endings in source and make files and shell scripts (585ms)
+    #>          creating vignettes ...     creating vignettes ...   ✔  creating vignettes (14.4s)
+    #>       ─  checking for LF line-endings in source and make files and shell scripts (619ms)
     #>       ─  checking for empty or unneeded directories
     #>       ─  building 'MetaNetis_0.1.0.tar.gz'
     #>      
     #> 
-    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/RtmpiUzxia/temp_libpath2b9847a946af'
+    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/RtmpQHqxXd/temp_libpath566078438da'
     #> (as 'lib' is unspecified)
     library("MetaNetis")
-    #> Warning: replacing previous import 'dplyr::as_data_frame' by
-    #> 'igraph::as_data_frame' when loading 'MetaNetis'
-    #> Warning: replacing previous import 'dplyr::groups' by 'igraph::groups' when
-    #> loading 'MetaNetis'
-    #> Warning: replacing previous import 'dplyr::union' by 'igraph::union' when
-    #> loading 'MetaNetis'
-    #> Warning: replacing previous import 'igraph::as_data_frame' by
-    #> 'tibble::as_data_frame' when loading 'MetaNetis'
-    #> Warning: replacing previous import 'igraph::crossing' by 'tidyr::crossing' when
-    #> loading 'MetaNetis'
 
 ## 🎯 Overview
 
@@ -114,7 +102,7 @@ metabolic activity (e.g., hyper- or hypo-regulation), making it a
 powerful tool for metabolomic and clinical research.
 
 <figure>
-<img src="vignette/package_overview.png"
+<img src="vignettes/package_overview.png"
 alt="MetaNetis Package Overview" />
 <figcaption aria-hidden="true">MetaNetis Package Overview</figcaption>
 </figure>
