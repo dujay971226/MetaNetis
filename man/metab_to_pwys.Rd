@@ -9,7 +9,7 @@ A data frame with rows representing unique metabolite-to-pathway associations, a
 \describe{
  \item{Metabolite_Name}{Standardized common name of the metabolite.}
  \item{HMDB_ID}{Unique identifier of the metabolite.}
- \item{Pathway}{Standardized name of the biochemical pathway the metabolite belongs to.}
+ \item{Pathway_Name}{Standardized name of the biochemical pathway the metabolite belongs to.}
 }
 }
 \source{
@@ -32,5 +32,11 @@ pathway activity based on metabolite concentrations.
   data(metab_to_pwys)
   head(metab_to_pwys)
 }
+
+}
+\references{
+\strong{HMDB Metabolite Reference Data}:
+Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
 }
 \keyword{datasets}

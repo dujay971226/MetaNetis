@@ -53,6 +53,7 @@
 #' \strong{Debugging Assistance:}
 #' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 #'
+#' @importFrom utils data
 #' @export
 GetRefRanges <- function() {
 
@@ -66,7 +67,7 @@ GetRefRanges <- function() {
   } else {
     # Attempt to load the data
     load_success <- tryCatch({
-      data(data_object_name)
+      data(data_object_name, package = "MetaNetis", envir = environment())
       TRUE
     }, error = function(e) {
       stop("Reference data missing, please reinstall the package or load altertative reference range with SetAltBaseline().")

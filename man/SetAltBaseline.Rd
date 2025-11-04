@@ -43,7 +43,8 @@ ref_df <- data.frame(
   HMDB_ID = c("HMDB0000190", "HMDB0000064", "HMDB0000001", "HMDB0001918"),
   Metabolite_Name = c("L-Tryptophan", "Creatinine", "1-Methylhistidine", "Glucose"),
   Sample_Type = c("Blood/Serum/Plasma", "Urine", "CSF", "Blood/Serum/Plasma"),
-  Subject_Age_Description = c("Adult (>18 years old)", "Newborn (0-30 days old)", "Adolescent (13-18 years old)", "Children (1-13 years old)"),
+  Subject_Age_Description = c("Adult (>18 years old)", "Newborn (0-30 days old)",
+   "Adolescent (13-18 years old)", "Children (1-13 years old)"),
 
   `Min_Age(year)` = c(18.0, 0.0, 13.0, 1.0),
   `Max_Age(year)` = c(Inf, 0.082, 18.0, 13.0),

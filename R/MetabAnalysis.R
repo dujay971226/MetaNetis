@@ -112,7 +112,7 @@ MetabAnalysis <- function(data_input = NULL,
 
   match_by <- match.arg(match_by)
 
-  # Step 1: Load Reference Data and check if there's a override
+  # 1. Load Reference Data and check if there's a override
   if (!is.null(ref_data_override)) {
     ref_df <- ref_data_override
   } else {
@@ -124,7 +124,7 @@ MetabAnalysis <- function(data_input = NULL,
     stop("Failed to retrieve or load reference ranges. Cannot perform MetabAnalysis.")
   }
 
-  # Step 2: Load User Data
+  # 2. Load User Data
   user_df <- NULL
   # Load from CSV
   if (is.character(data_input) && file.exists(data_input)) {
@@ -137,7 +137,7 @@ MetabAnalysis <- function(data_input = NULL,
     stop("Invalid data_input. Must be a valid CSV path or a data frame.")
   }
 
-  # Step 3: Validate and Prepare User Data
+  # 3. Validate and Prepare User Data
 
   # Ensure all columns are numeric (concentration data)
   conc_data <- user_df
@@ -197,7 +197,7 @@ MetabAnalysis <- function(data_input = NULL,
   results_df <- conc_data
   results_df[] <- "Missing Reference"
 
-  # Step 4: Analyze Concentrations (Per Sample)
+  # 4. Analyze Concentrations (Per Sample)
 
   sample_names <- colnames(conc_data)
 

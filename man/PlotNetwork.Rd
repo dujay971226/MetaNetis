@@ -2,38 +2,72 @@
 % Please edit documentation in R/PlotNetwork.R
 \name{PlotNetwork}
 \alias{PlotNetwork}
-\title{Pathway Network Visualization}
+\title{Plot pathway network for a given sample}
 \usage{
-PlotNetwork(pathway_status_df, sample_id)
+PlotNetwork(result, sample_id)
 }
 \arguments{
-\item{pathway_map_df}{A data frame (the result of MapToPathway) that must
-contain at least two columns: \code{Metabolite} (character/factor) and
-\code{Pathway} (character/factor). This map defines which metabolites belong
-to which pathways.}
+\item{result}{Tibble containing columns: Sample_ID, Pathway_Name, Net_Score}
+
+\item{sample_id}{Sample ID to visualize (character)}
 }
 \value{
-Returns a \code{ggplot} object (via \code{ggraph}).
+Returns a \code{ggplot2} object (via \code{ggraph}).
 }
 \description{
-Creates a static, high-quality network visualization of biochemical pathways
-using the \code{ggraph} package, based on a pre-filtered metabolite-to-pathway map.
-
-The network highlights connections between pathways that share common metabolites.
-This function takes the direct output of a mapping process (e.g., MapToPathway),
-constructs a unipartite graph (pathways as nodes), and uses \code{ggraph}
-for layout and plotting.
+Builds a pathway-level network where each node is a pathway, and an edge
+connects two pathways if they share at least one metabolite.
+Node color is determined by pathway Net_Score
+(red = hyperactive, blue = hypoactive).
 }
 \examples{
 \dontrun{
-  # Assuming MapToPathway returns a data frame like this:
-  mock_pathway_map <- data.frame(
-    Metabolite = c("Glucose", "Fructose", "ATP", "ADP", "Citrate", "Isocitrate"),
-    Pathway = c("Glycolysis", "Glycolysis", "Glycolysis", "TCA cycle", "TCA cycle", "TCA cycle")
-  )
+# Define 12 pathways
+pathways <- c("Glycolysis", "Energy Metabolism", "Lipid Metabolism",
+  "BCAA Metabolism", "Serotonin Synthesis", "Histidine Metabolism",
+  "TCA Cycle", "Purine Metabolism", "Pyrimidine Metabolism",
+  "Fatty Acid Oxidation", "Amino Acid Metabolism", "Urea Cycle")
 
-  network_plot <- PlotNetwork(mock_pathway_map)
-  print(network_plot)
+# Create 50 metabolites
+metabolites <- paste0("Metab", 1:50)
+hmdb_ids <- paste0("HMDB", sprintf("\%05d", 1:50))
+
+# Each metabolite participates in 2-4 random pathways to create dense connections
+metab_to_pwys <- tibble()
+for (i in 1:50) {
+ n_paths <- sample(2:4, 1)
+ temp <- tibble(
+  Metabolite_Name = rep(metabolites[i], n_paths),
+  HMDB_ID = rep(hmdb_ids[i], n_paths),
+  Pathway_Name = sample(pathways, n_paths)
+ )
+ metab_to_pwys <- bind_rows(metab_to_pwys, temp)
 }
 
+# Mock pathway results per sample
+result <- expand.grid(
+ Sample_ID = c("Sample1", "Sample2"),
+ Pathway_Name = pathways) \%>\%
+ as_tibble() \%>\%
+ mutate(
+  Net_Score = sample(-3:3, n(), replace = TRUE),
+  Metabolites_Affected = sample(1:10, n(), replace = TRUE),
+  Activity_Status = sample(c(
+   "Hyperactive", "Normal Activity", "Hypoactive", "Mild Inhibition"),
+   n(), replace = TRUE
+  )
+ )
+
+ PlotNetwork(result, "Sample1")
+
+}
+
+}
+\references{
+\strong{HMDB Metabolite Reference Data}:
+Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+
+\strong{Debugging Assistance:}
+Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 }

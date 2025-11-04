@@ -29,8 +29,7 @@ reference_ranges_df
 A pre-processed and aggregated dataset containing healthy human reference
 ranges for metabolites derived from the Human Metabolome Database (HMDB).
 This table forms the standardized baseline for comparison within the \code{MetaNetis} package.
-}
-\details{
+
 The original HMDB data was extensively cleaned to produce a robust dataset
 suitable for comparing user metabolomic profiles against healthy controls.
 The key cleaning and standardization steps performed include:
@@ -56,5 +55,11 @@ The key cleaning and standardization steps performed include:
   data(reference_ranges_df)
   head(reference_ranges_df)
 }
+
+}
+\references{
+\strong{HMDB Metabolite Reference Data}:
+Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
 }
 \keyword{datasets}

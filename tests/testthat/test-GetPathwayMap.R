@@ -9,7 +9,7 @@ test_that("GetPathwayMap runs correctly and returns valid structure", {
   expect_true(nrow(map_df) > 1)
 
   # Check for all expected columns in the final output
-  expected_cols <- c("Metabolite", "HMDB_ID", "Pathway")
+  expected_cols <- c("Metabolite_Name", "HMDB_ID", "Pathway_Name")
   expect_true(all(expected_cols %in% colnames(map_df)))
 
   # 2. Data type checks

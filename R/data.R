@@ -1,5 +1,6 @@
-#' Standardized Human Metabolite Reference Ranges (MetaNetis Baseline)
+#' @title Standardized Human Metabolite Reference Ranges (MetaNetis Baseline)
 #'
+#' @description
 #' A pre-processed and aggregated dataset containing healthy human reference
 #' ranges for metabolites derived from the Human Metabolome Database (HMDB).
 #' This table forms the standardized baseline for comparison within the \code{MetaNetis} package.
@@ -45,10 +46,18 @@
 #'   data(reference_ranges_df)
 #'   head(reference_ranges_df)
 #' }
+#'
+#' @references
+#' \strong{HMDB Metabolite Reference Data}:
+#' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#'
+#' @docType data
 "reference_ranges_df"
 
-#' Metabolite-to-Pathway Mapping (MetaNetis Baseline)
+#' @title Metabolite-to-Pathway Mapping (MetaNetis Baseline)
 #'
+#' @description
 #' A standardized, cleaned, and aggregated mapping of metabolites to their
 #' associated biochemical pathways, derived from the Human Metabolome Database (HMDB).
 #' This table is used internally by functions like \code{MapToPathway} to score
@@ -60,7 +69,7 @@
 #' \describe{
 #'  \item{Metabolite_Name}{Standardized common name of the metabolite.}
 #'  \item{HMDB_ID}{Unique identifier of the metabolite.}
-#'  \item{Pathway}{Standardized name of the biochemical pathway the metabolite belongs to.}
+#'  \item{Pathway_Name}{Standardized name of the biochemical pathway the metabolite belongs to.}
 #' }
 #'
 #' @examples
@@ -71,6 +80,13 @@
 #'   data(metab_to_pwys)
 #'   head(metab_to_pwys)
 #' }
+#'
+#' @references
+#' \strong{HMDB Metabolite Reference Data}:
+#' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#'
+#' @docType data
 "metab_to_pwys"
 
 

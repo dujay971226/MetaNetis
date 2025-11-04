@@ -1,4 +1,10 @@
-#' Plot pathway network for a given sample
+utils::globalVariables(c(
+  "Sample_ID", "Pathway_Name", "Net_Score",
+  "Pathway_Name.x", "Pathway_Name.y",
+  "Shared_Metabolites", "name", "aes"
+))
+
+#' @title Plot pathway network for a given sample
 #'
 #' @description
 #' Builds a pathway-level network where each node is a pathway, and an edge
@@ -8,87 +14,122 @@
 #'
 #' @param result Tibble containing columns: Sample_ID, Pathway_Name, Net_Score
 #' @param sample_id Sample ID to visualize (character)
-#' @param metab_to_pwys Tibble containing: Metabolite_Name, HMDB_ID, Pathway_Name
 #'
 #' @return Returns a \code{ggplot2} object (via \code{ggraph}).
 #'
 #' @examples
 #' \dontrun{
-#'   # Assuming MapToPathway returns a data frame like this:
-#'   mock_pathway_map <- data.frame(
-#'     Metabolite = c("Glucose", "Fructose", "ATP", "ADP", "Citrate", "Isocitrate"),
-#'     Pathway = c("Glycolysis", "Glycolysis", "Glycolysis", "TCA cycle", "TCA cycle", "TCA cycle")
-#'   )
+#' # Define 12 pathways
+#' pathways <- c("Glycolysis", "Energy Metabolism", "Lipid Metabolism",
+#'   "BCAA Metabolism", "Serotonin Synthesis", "Histidine Metabolism",
+#'   "TCA Cycle", "Purine Metabolism", "Pyrimidine Metabolism",
+#'   "Fatty Acid Oxidation", "Amino Acid Metabolism", "Urea Cycle")
 #'
-#'   network_plot <- PlotNetwork(mock_pathway_map)
-#'   print(network_plot)
+#' # Create 50 metabolites
+#' metabolites <- paste0("Metab", 1:50)
+#' hmdb_ids <- paste0("HMDB", sprintf("%05d", 1:50))
+#'
+#' # Each metabolite participates in 2-4 random pathways to create dense connections
+#' metab_to_pwys <- tibble()
+#' for (i in 1:50) {
+#'  n_paths <- sample(2:4, 1)
+#'  temp <- tibble(
+#'   Metabolite_Name = rep(metabolites[i], n_paths),
+#'   HMDB_ID = rep(hmdb_ids[i], n_paths),
+#'   Pathway_Name = sample(pathways, n_paths)
+#'  )
+#'  metab_to_pwys <- bind_rows(metab_to_pwys, temp)
 #' }
 #'
-#' @import dplyr igraph ggraph ggplot2 scales
+#' # Mock pathway results per sample
+#' result <- expand.grid(
+#'  Sample_ID = c("Sample1", "Sample2"),
+#'  Pathway_Name = pathways) %>%
+#'  as_tibble() %>%
+#'  mutate(
+#'   Net_Score = sample(-3:3, n(), replace = TRUE),
+#'   Metabolites_Affected = sample(1:10, n(), replace = TRUE),
+#'   Activity_Status = sample(c(
+#'    "Hyperactive", "Normal Activity", "Hypoactive", "Mild Inhibition"),
+#'    n(), replace = TRUE
+#'   )
+#'  )
+#'
+#'  PlotNetwork(result, "Sample1")
+#'
+#' }
+#'
+#' @references
+#' \strong{HMDB Metabolite Reference Data}:
+#' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#'
+#' \strong{Debugging Assistance:}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#'
+#' @importFrom dplyr filter select rename count inner_join
+#' @importFrom igraph graph_from_data_frame
+#' @importFrom ggraph ggraph geom_edge_link geom_node_point geom_node_text
+#' @importFrom ggplot2 scale_fill_gradient2 ggtitle theme element_text theme_void
 #' @export
 PlotNetwork <- function(result, sample_id) {
-  # Required packages
-  library(dplyr)
-  library(tidyr)
-  library(igraph)
-  library(ggraph)
-  library(scales)
 
-  # --- 1. Filter to the chosen sample
+  # 1. Filter to the chosen sample
   df <- result %>%
-    filter(Sample_ID == sample_id) %>%
-    select(Pathway_Name, Net_Score)
+    dplyr::filter(Sample_ID == sample_id) %>%
+    dplyr::select(Pathway_Name, Net_Score)
 
   if (nrow(df) == 0) {
     stop(paste("No data found for Sample_ID:", sample_id))
   }
 
-  # --- 2. Retrieve metabolite-pathway relationships dynamically
+  # 2. Retrieve metabolite-pathway relationships dynamically
   metab_to_pwys <- GetPathwayMap()
 
-  # --- 3. Keep only pathways present in this sample
+  # 3. Keep only pathways present in this sample
   rel_map <- metab_to_pwys %>%
-    filter(Pathway_Name %in% df$Pathway_Name)
+    dplyr::filter(Pathway_Name %in% df$Pathway_Name)
 
   if (nrow(rel_map) == 0) {
     stop("No metabolite-pathway relationships found for selected pathways.")
   }
 
-  # Vertices
+  # 4. Get Vertices
   vertices <- df %>% rename(name = Pathway_Name)
 
-  # Edges
+  # 5. Get Edges
   edges <- rel_map %>%
-    inner_join(rel_map, by = "HMDB_ID") %>%
-    filter(Pathway_Name.x != Pathway_Name.y) %>%
-    count(Pathway_Name.x, Pathway_Name.y, name = "Shared_Metabolites") %>%
+    dplyr::inner_join(rel_map, by = "HMDB_ID") %>%
+    dplyr::filter(Pathway_Name.x != Pathway_Name.y) %>%
+    dplyr::count(Pathway_Name.x, Pathway_Name.y, name = "Shared_Metabolites") %>%
     distinct() %>%
-    rename(from = Pathway_Name.x, to = Pathway_Name.y)
+    dplyr::rename(from = Pathway_Name.x, to = Pathway_Name.y)
 
-  # Graph
-  g <- graph_from_data_frame(edges, directed = FALSE, vertices = vertices)
+  # 6. Graph
+  g <- igraph::graph_from_data_frame(edges, directed = FALSE, vertices = vertices)
 
-  # Plot
-  p <- ggraph(g, layout = "fr") +
-    geom_edge_link(aes(width = Shared_Metabolites),
+  p <- ggraph::ggraph(g, layout = "fr") +
+    ggraph::geom_edge_link(ggplot2::aes(width = Shared_Metabolites),
                    alpha = 0.3, color = "grey60") +
-    geom_node_point(aes(fill = Net_Score),
+    ggraph::geom_node_point(ggplot2::aes(fill = Net_Score),
                     shape = 21, color = "black", stroke = 1.2, size = 6) +
-    geom_node_text(aes(label = name), repel = TRUE, size = 3) +
-    scale_fill_gradient2(
+    ggraph::geom_node_text(ggplot2::aes(label = name), repel = TRUE, size = 3) +
+    ggplot2::scale_fill_gradient2(
       low = "blue", mid = "white", high = "red",
       midpoint = 0,
       name = "Pathway Activity",
       breaks = c(min(df$Net_Score), 0, max(df$Net_Score)),
       labels = c("Hypoactive", "Normal", "Hyperactive")
     ) +
-    ggtitle("Metabolic Pathway Network") +
-    theme_void() +
-    theme(
-      plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
-      legend.title = element_text(size = 12),
-      legend.text = element_text(size = 10)
+    ggplot2::ggtitle("Metabolic Pathway Network") +
+    ggplot2::theme_void() +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5, size = 18, face = "bold"),
+      legend.title = ggplot2::element_text(size = 12),
+      legend.text = ggplot2::element_text(size = 10)
     )
 
   return(p)
 }
+
+# [END]

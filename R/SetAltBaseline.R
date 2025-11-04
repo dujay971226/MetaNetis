@@ -36,7 +36,8 @@
 #'   HMDB_ID = c("HMDB0000190", "HMDB0000064", "HMDB0000001", "HMDB0001918"),
 #'   Metabolite_Name = c("L-Tryptophan", "Creatinine", "1-Methylhistidine", "Glucose"),
 #'   Sample_Type = c("Blood/Serum/Plasma", "Urine", "CSF", "Blood/Serum/Plasma"),
-#'   Subject_Age_Description = c("Adult (>18 years old)", "Newborn (0-30 days old)", "Adolescent (13-18 years old)", "Children (1-13 years old)"),
+#'   Subject_Age_Description = c("Adult (>18 years old)", "Newborn (0-30 days old)",
+#'    "Adolescent (13-18 years old)", "Children (1-13 years old)"),
 #'
 #'   `Min_Age(year)` = c(18.0, 0.0, 13.0, 1.0),
 #'   `Max_Age(year)` = c(Inf, 0.082, 18.0, 13.0),
@@ -60,18 +61,19 @@
 #' \strong{Debugging Assistance:}
 #' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 #'
+#' @importFrom utils data
 #' @export
 SetAltBaseline <- function(data_source = NULL) {
 
-  # If parameter is NULL, load original data frame
+  # 1. If parameter is NULL, load original data frame
   if (is.null(data_source)) {
     message("Provided data is empty. Loading original package reference data...")
-    data("reference_ranges_df", package = "MetaNetis")
+    data("reference_ranges_df", package = "MetaNetis", envir = environment())
     assign("reference_ranges_df", get("reference_ranges_df"), envir = .GlobalEnv)
     return(invisible(NULL))
   }
 
-  # If Not empty
+  # 2. If Not empty
   new_baseline_df <- NULL
   required_cols <- c(
     "HMDB_ID", "Metabolite_Name", "Sample_Type", "Subject_Age_Description",
@@ -79,7 +81,7 @@ SetAltBaseline <- function(data_source = NULL) {
     "Mean_Concentration(Healthy)", "Max_Concentration(Healthy)", "Unit"
   )
 
-  # Case 1: Input is a csv file path
+  # Case 1. Input is a csv file path
   if (is.character(data_source)) {
     csv_path <- data_source
     if (!file.exists(csv_path)) {
@@ -95,12 +97,12 @@ SetAltBaseline <- function(data_source = NULL) {
     message(paste("Successfully loaded alternative reference ranges from file:", csv_path))
 
   } else if (is.data.frame(data_source)) {
-    # Case 2: Input is a data frame
+    # Case 2. Input is a data frame
     new_baseline_df <- data_source
     message("Successfully loaded alternative reference ranges from provided data frame.")
 
   } else {
-    # Case 3: Invalid input type
+    # Case 3. Invalid input type
     stop("Error: 'data_source' must be a valid csv file path (character) or a data frame (data.frame).")
   }
 
@@ -118,10 +120,10 @@ SetAltBaseline <- function(data_source = NULL) {
     ))
   }
 
-  # In case the order is messed up
+  # 3. In case the order is messed up
   new_baseline_df <- new_baseline_df[, required_cols]
 
-  # Assign the loaded data frame to the target name in the environment.
+  # 4. Assign the loaded data frame to the target name in the environment.
   assign("reference_ranges_df", new_baseline_df, envir = .GlobalEnv)
   message("The default package reference data has been updated.")
 
