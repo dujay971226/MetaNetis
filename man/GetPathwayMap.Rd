@@ -27,7 +27,7 @@ and assumes it was pre-loaded via \code{usethis::use_data()}.
 }
 \examples{
 # Example 1: load the reference dataset
-map_df <- GetPathwayMap()
+map_df <- MetaNetis::GetPathwayMap()
 head(map_df)
 
 }

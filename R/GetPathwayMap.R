@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' # Example 1: load the reference dataset
-#' map_df <- GetPathwayMap()
+#' map_df <- MetaNetis::GetPathwayMap()
 #' head(map_df)
 #'
 #' @references
