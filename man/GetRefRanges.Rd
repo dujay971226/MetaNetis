@@ -48,11 +48,9 @@ This function first checks for the existence of the object in the global environ
 and loads it from the package data if missing.
 }
 \examples{
-\dontrun{
-# load the reference dataset
+# Example 1: load the reference dataset
 ref_df <- GetRefRanges()
-View(ref_df)
-}
+head(ref_df)
 
 }
 \references{

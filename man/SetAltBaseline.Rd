@@ -4,11 +4,13 @@
 \alias{SetAltBaseline}
 \title{Set an Alternative Reference Range Baseline}
 \usage{
-SetAltBaseline(data_source)
+SetAltBaseline(data_source = NULL)
 }
 \arguments{
 \item{data_source}{Either a character string specifying the file path to a CSV file
-or a data frame object containing the alternative reference range data.}
+or a data frame object containing the alternative reference range data. If left
+empty, then the default reference_ranges_df from Human Metabolome Database(HMDB)
+will be loaded.}
 }
 \description{
 Loads a user-provided data source (either a file path to a CSV or a data frame object)
@@ -43,17 +45,26 @@ ref_df <- data.frame(
   Sample_Type = c("Blood/Serum/Plasma", "Urine", "CSF", "Blood/Serum/Plasma"),
   Subject_Age_Description = c("Adult (>18 years old)", "Newborn (0-30 days old)", "Adolescent (13-18 years old)", "Children (1-13 years old)"),
 
-  'Min_Age (year)' = c(18.0, 0.0, 13.0, 1.0),
-  'Max_Age (year)' = c(Inf, 0.082, 18.0, 13.0), # 30 days is ~0.082 years
-
-  'Min Concentration (Healthy)' = c(50.0, 0.15, 0.012, 3500.0),
-  'Mean (Healthy)' = c(75.5, 0.25, 0.021, 5200.0),
-  'Max Concentration (Healthy)' = c(100.0, 0.50, 0.030, 8000.0),
-  'Concentration Unit' = c("uM", "umol/mmol creatinine", "uM", "uM"),
-  stringsAsFactors = FALSE
+  `Min_Age(year)` = c(18.0, 0.0, 13.0, 1.0),
+  `Max_Age(year)` = c(Inf, 0.082, 18.0, 13.0),
+  `Min_Concentration(Healthy)` = c(50.0, 0.15, 0.012, 3500.0),
+  `Mean_Concentration(Healthy)` = c(75.5, 0.25, 0.021, 5200.0),
+  `Max_Concentration(Healthy)` = c(100.0, 0.50, 0.030, 8000.0),
+  Unit = c("uM", "umol/mmol creatinine", "uM", "uM"),
+  stringsAsFactors = FALSE,
+  check.names = FALSE
 )
 
 SetAltBaseline(ref_df)
 GetRefRanges()
+SetAltBaseline()
 
+}
+\references{
+\strong{HMDB Metabolite Reference Data}:
+Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+
+\strong{Debugging Assistance:}
+Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 }

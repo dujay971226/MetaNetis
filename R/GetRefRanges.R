@@ -41,11 +41,9 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
-#' # load the reference dataset
+#' # Example 1: load the reference dataset
 #' ref_df <- GetRefRanges()
-#' View(ref_df)
-#' }
+#' head(ref_df)
 #'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:

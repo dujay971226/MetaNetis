@@ -1,0 +1,14 @@
+citHeader("To cite MetaNetis in publications use:")
+
+citEntry(entry = "Unpublished",
+  title        = "MetaNetis: Pathway activity networks analysis based on metabolite abundance",
+  author       = "Jay Du",
+  note         = "Unpublished",
+  year         = "2025",
+  url          = "https://github.com/dujay971226/MetaNetis",
+
+
+  textVersion  =
+  paste("Jay, D. (2025) MetaNetis: Pathway activity networks analysis based on
+  metabolite abundance. Unpublished. URL https://github.com/dujay971226/MetaNetis.")
+)

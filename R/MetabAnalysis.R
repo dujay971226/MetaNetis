@@ -2,9 +2,11 @@
 #'
 #' @description
 #' Compares a user-supplied metabolite concentration dataset against the
-#' standardized healthy reference ranges provided by \code{GetRefRanges()}.
+#' standardized healthy reference ranges provided by \code{GetRefRanges()} based
+#' on Human Metabolome Database(HMDB).
 #' It returns a data frame showing the classification of each metabolite's
-#' concentration in each sample as "Normal," "High," or "Low."
+#' concentration in each sample as "Normal," "High," or "Low." If reference
+#' range not available, it will show "Missing Reference" instead.
 #'
 #' @param data_input A data frame or a character string representing the file path
 #'   to a CSV file containing metabolite concentrations. Rows must represent
@@ -92,10 +94,18 @@
 #'   metabolite cannot be matched or no age-appropriate reference is found,
 #'   the classification will be "Missing Reference".
 #'
+#' @references
+#' \strong{HMDB Metabolite Reference Data}:
+#' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#'
+#' \strong{Debugging Assistance:}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#'
 #' @importFrom utils read.csv
 #' @export
-MetabAnalysis <- function(data_input,
-                          age,
+MetabAnalysis <- function(data_input = NULL,
+                          age = NULL,
                           sample_type = NULL,
                           match_by = c("HMDB_ID", "Metabolite_Name"),
                           ref_data_override = NULL) {

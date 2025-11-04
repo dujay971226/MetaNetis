@@ -11,12 +11,12 @@ A data frame with rows representing unique metabolite, biofluid, and age group c
  \item{Metabolite_Name}{Common name of the metabolite.}
  \item{Sample_Type}{Standardized biological fluid type (e.g., Blood/Serum/Plasma, CSF, Urine).}
  \item{Subject_Age_Description}{The original age group description from the HMDB dataset.}
- \item{Min_Age (year)}{Minimum age (in years) for the applicable age group.}
- \item{Max_Age (year)}{Maximum age (in years) for the applicable age group (\code{Inf} for general adult groups).}
- \item{Min Concentration (Healthy)}{Minimum concentration observed in healthy individuals within the age group.}
- \item{Mean (Healthy)}{Aggregated average concentration in healthy individuals within the age group.}
- \item{Max Concentration (Healthy)}{Maximum concentration observed in healthy individuals within the age group.}
- \item{Concentration Unit}{The unit of measurement for concentration (e.g., uM, umol/mmol creatinine).}
+ \item{Min_Age(year)}{Minimum age (in years) for the applicable age group.}
+ \item{Max_Age(year)}{Maximum age (in years) for the applicable age group (\code{Inf} for general adult groups).}
+ \item{Min_Concentration(Healthy)}{Minimum concentration observed in healthy individuals within the age group.}
+ \item{Mean_Concentration(Healthy)}{Aggregated average concentration in healthy individuals within the age group.}
+ \item{Max_Concentration(Healthy)}{Maximum concentration observed in healthy individuals within the age group.}
+ \item{Unit}{The unit of measurement for concentration (e.g., uM, umol/mmol creatinine).}
 }
 }
 \source{

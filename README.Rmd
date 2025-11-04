@@ -15,41 +15,68 @@ knitr::opts_chunk$set(
 
 # MetaNetis
 
+## Description
+
+\strong{MetaNetis} is an \R package purpose-built to standardize the critical step of biological interpretation in quantitative metabolomics studies. It takes raw metabolite concentration data and the associated biological context (age and biospecimen type) and benchmarks it against a robust, internally-curated baseline derived from the \strong{Human Metabolome Database (HMDB)}. The core biological data being analyzed are metabolite concentration values (e.g., \code{umol/L} or \code{ng/mL}) and their functional associations with metabolic pathways. MetaNetis significantly improves the current workflow in computational biology by providing \strong{novel, quantitative functional interpretation}. \strong{Unlike tools such as MetaboAnalyst, which typically rely on pathway enrichment statistics}, MetaNetis compares results against \strong{real-world, sample-matched metabolite reference data} and directly links individual concentration deviations to pathway activity (Hypoactive/Hyperactive). This unique approach eliminates the interpretation bias inherent in generic comparisons and allows for the precise, quantitative assessment of functional metabolic changes. Development for \strong{MetaNetis} was conducted on \R version 4.5.1 (2025-06-13 ucrt) using Windows 10 x64 (build 19045).
+```
+
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of MetaNetis is to ...
 
 ## Installation
 
 You can install the development version of MetaNetis from [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("pak")
-pak::pak("dujay971226/MetaNetis")
+``` {r}
+install.packages("devtools")
+library("devtools")
+devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
+library("MetaNetis")
 ```
 
-## Example
+## 🎯 Overview
+MetaNetis is an $\text{R}$ package designed to bridge the gap between raw metabolomics data and biological interpretation. It provides a standardized framework for benchmarking user-supplied metabolite concentrations against a robust, healthy human reference population derived from the Human Metabolome Database (HMDB).
 
-This is a basic example which shows you how to solve a common problem:
+The package's core value lies in its ability to generate high-confidence classifications and translate those classifications into functional insights about metabolic pathway activity.
 
-```{r example}
-library(MetaNetis)
-## basic example code
+### ✨ Features
+
+\itemize{
+  \item \strong{Standardized Concentration Analysis (\code{MetabAnalysis}):}
+    \itemize{
+      \item \strong{Benchmarking:} Compares input concentrations to a cleaned, aggregated HMDB baseline.
+      \item \strong{High-Precision Filtering:} Applies **sample-specific filters** for both \code{age} (in years) and
+        **biospecimen type** (e.g., \code{Urine}, \code{Plasma}, \code{CSF}).
+      \item \strong{Classification:} Classifies each metabolite concentration as \code{"Low"}, \code{"Normal"}, or 
+        \code{"High"}.
+    }
+  
+  \item \strong{Functional Pathway Mapping (\code{MapToPathway}):}
+    \itemize{
+      \item \strong{Dependency:} Requires an external pathway map (e.g., from HMDB or KEGG) for linking metabolites to 
+        functions.
+      \item \strong{Scoring:} Calculates a **Net Score** for each pathway based on the sum of activated (+1) and 
+        inhibited (-1) metabolites.
+      \item \strong{Activity Level:} Determines the overall pathway activity as \code{"Hypoactive"}, \code{"Normal 
+        Activity"}, or \code{"Hyperactive"}.
+    }
+
+  \item \strong{Flexible Data Management:}
+    \itemize{
+      \item Uses a default, curated HMDB reference baseline via \code{GetRefRanges()}.
+      \item Allows researchers to easily override the default data with custom reference ranges using 
+        \code{SetAltBaseline()}.
+    }
+}
+
+``` {r}
+ls("package:MetaNetis")
+data(package = "MetaNetis") 
+browseVignettes("MetaNetis")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Acknowledgements
 
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+This package was developed as part of an assessment for 2025 BCB410H: Applied Bioinformatics course at the University of Toronto, Toronto, CANADA. MetaNetis welcomes issues,
+enhancement requests, and other contributions. To submit an issue, use the GitHub issues.

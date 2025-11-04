@@ -5,8 +5,8 @@
 \title{Analyze Metabolite Concentrations Against Healthy Reference Ranges}
 \usage{
 MetabAnalysis(
-  data_input,
-  age,
+  data_input = NULL,
+  age = NULL,
   sample_type = NULL,
   match_by = c("HMDB_ID", "Metabolite_Name"),
   ref_data_override = NULL
@@ -43,9 +43,11 @@ A data frame with the same structure as \code{data_input} (rows as
 }
 \description{
 Compares a user-supplied metabolite concentration dataset against the
-standardized healthy reference ranges provided by \code{GetRefRanges()}.
+standardized healthy reference ranges provided by \code{GetRefRanges()} based
+on Human Metabolome Database(HMDB).
 It returns a data frame showing the classification of each metabolite's
-concentration in each sample as "Normal," "High," or "Low."
+concentration in each sample as "Normal," "High," or "Low." If reference
+range not available, it will show "Missing Reference" instead.
 }
 \details{
 This function assumes the user data has been formatted so that metabolite
@@ -58,39 +60,64 @@ parameter to determine which column in the reference table to match the row name
   \item **Row Names:** Must be HMDB IDs (e.g., "HMDB0000001") or Metabolite Names (e.g., "Alanine").
   \item **Columns:** Must be numeric concentration values for each sample.
 }
-
-#' @examples
+}
+\examples{
 \dontrun{
-# User metabolite data
-user_data <- data.frame(
-  Sample_A = c(250, 6.0, 120, 50), # Sample A age 5: Alanine is High (250 > 200)
-  Sample_B = c(160, 12.0, 60, 50), # Sample B age 20: Alanine is Normal (160 is in 150-300)
-  row.names = c("HMDB0001310", "HMDB0000002", "HMDB0000003", "HMDB0000004")
+# Example 1
+# Make a mock reference data
+mock_reference_data <- data.frame(
+  'HMDB_ID' = c("HMDB0000001", "HMDB0000001", "HMDB0000002", "HMDB0000003", "HMDB0000005"),
+  'Metabolite_Name' = c("Alanine", "Alanine", "Glucose", "Creatinine", "Missing_Metab"),
+  'Sample_Type' = c("Urine", "Plasma", "Plasma", "Urine", "Plasma"),
+  'Min_Age(year)' = c(0, 11, 0, 0, 0),
+  'Max_Age(year)' = c(99, 99, 99, 99, 99),
+  'Min_Concentration(Healthy)' = c(500, 150, 4.0, 50, 200),
+  'Max_Concentration(Healthy)' = c(1000, 300, 7.0, 100, 400),
+  check.names = FALSE
 )
 
-age_vector <- c(5, 20)
+# User's Input
+user_data <- data.frame(
+  Sample_A = c(250, 6.0, 120, 50),
+  Sample_B = c(160, 12.0, 60, 50),
+  row.names = c("HMDB0000001", "HMDB0000002", "HMDB0000003", "HMDB0000004")
+)
 
-# --- Test Case Execution (Matching by HMDB_ID) ---
-message("--- Analysis by HMDB_ID ---")
+# Age and Sample Type
+age_vector <- c(5, 20)
+sample_type_vector <- c("Urine", "Plasma") # Sample A is Urine, Sample B is Plasma
+
+# Test Case: Matching by HMDB_ID
 results_id <- MetabAnalysis(
   data_input = user_data,
   age = age_vector,
-  match_by = "HMDB_ID"
+  sample_type = sample_type_vector,
+  match_by = "HMDB_ID",
+  ref_data_override = mock_reference_data
 )
 print(results_id)
 
-# --- Test Case Execution (Matching by Metabolite_Name) ---
-# Rename row names for name matching test
+# Test Case : Matching by Metabolite_Name
+# Rename row names to test the 'Metabolite_Name' matching path
 user_data_name <- user_data
-row.names(user_data_name) <- c("D-Alanine", "Glucose", "Creatinine", "ALT")
+row.names(user_data_name) <- c("Alanine", "Glucose", "Creatinine", "Unknown_Metab")
 
-message("\n--- Analysis by Metabolite_Name ---")
-# The function will issue a warning because "Unknown_Metab" is missing.
 results_name <- MetabAnalysis(
   data_input = user_data_name,
   age = age_vector,
-  match_by = "Metabolite_Name"
+  sample_type = sample_type_vector,
+  match_by = "Metabolite_Name",
+  ref_data_override = mock_reference_data
 )
 print(results_name)
 }
+
+}
+\references{
+\strong{HMDB Metabolite Reference Data}:
+Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+
+\strong{Debugging Assistance:}
+Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 }
