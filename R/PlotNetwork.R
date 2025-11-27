@@ -59,6 +59,8 @@ utils::globalVariables(c(
 #'
 #' }
 #'
+#' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}
+#'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
@@ -68,8 +70,8 @@ utils::globalVariables(c(
 #' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 #'
 #' @importFrom dplyr filter select rename count inner_join
-#' @importFrom igraph graph_from_data_frame
-#' @importFrom ggraph ggraph geom_edge_link geom_node_point geom_node_text
+#' @importFrom igraph graph_from_data_frame layout_with_kk
+#' @importFrom ggraph ggraph geom_edge_link geom_node_point geom_node_text scale_edge_width
 #' @importFrom ggplot2 scale_fill_gradient2 ggtitle theme element_text theme_void
 #' @export
 PlotNetwork <- function(result, sample_id) {
@@ -108,18 +110,48 @@ PlotNetwork <- function(result, sample_id) {
   # 6. Graph
   g <- igraph::graph_from_data_frame(edges, directed = FALSE, vertices = vertices)
 
-  p <- ggraph::ggraph(g, layout = "fr") +
+  # Calculate symmetrical limits for the visual gradient
+  max_abs_score <- max(abs(df$Net_Score), na.rm = TRUE)
+  min_score <- min(df$Net_Score)
+  max_score <- max(df$Net_Score)
+
+  # Determine if data is Bipolar (contains both positive and negative values)
+  is_bipolar <- min(df$Net_Score) < 0 && max(df$Net_Score) > 0
+
+  if (min_score == max_score) {
+    custom_breaks <- c(min_score)
+    custom_labels <- c(paste("Activation Score:", round(min_score, 2)))
+
+  } else if (is_bipolar) {
+    custom_breaks <- c(min_score, 0, max_score)
+    custom_labels <- c("Hypoactive", "Neutral", "Hyperactive")
+
+  } else if (min_score > 0) {
+    custom_breaks <- c(min_score, max_score)
+    custom_labels <- c("Low Activation", "High Activation")
+
+  } else { # max_score < 0
+    custom_breaks <- c(min_score, max_score)
+    custom_labels <- c("Strong Hypo.", "Weak Hypo.")
+  }
+
+  layout <- layout_with_kk(g)
+
+  p <- ggraph::ggraph(g, layout = layout) +
     ggraph::geom_edge_link(ggplot2::aes(width = Shared_Metabolites),
                    alpha = 0.3, color = "grey60") +
+    scale_edge_width(range = c(0.2, 2)) +
     ggraph::geom_node_point(ggplot2::aes(fill = Net_Score),
                     shape = 21, color = "black", stroke = 1.2, size = 6) +
-    ggraph::geom_node_text(ggplot2::aes(label = name), repel = TRUE, size = 3) +
+    ggraph::geom_node_text(ggplot2::aes(label = name), repel = TRUE, size = 3,
+                           max.overlaps = Inf) +
     ggplot2::scale_fill_gradient2(
       low = "blue", mid = "white", high = "red",
       midpoint = 0,
+      limits = c(-max_abs_score, max_abs_score),
       name = "Pathway Activity",
-      breaks = c(min(df$Net_Score), 0, max(df$Net_Score)),
-      labels = c("Hypoactive", "Normal", "Hyperactive")
+      breaks = custom_breaks,
+      labels = custom_labels
     ) +
     ggplot2::ggtitle("Metabolic Pathway Network") +
     ggplot2::theme_void() +

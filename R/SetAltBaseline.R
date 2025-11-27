@@ -65,15 +65,22 @@
 #' @export
 SetAltBaseline <- function(data_source = NULL) {
 
-  # 1. If parameter is NULL, load original data frame
+  # Path to alternative dataset in package data directory
+  alt_file <- file.path(Sys.getenv("HOME"), ".MetaNetis", "alt_ref_ranges.rds")
+  dir.create(dirname(alt_file), showWarnings = FALSE, recursive = TRUE)
+
+  # 1. If parameter is NULL, remove existing alt file
   if (is.null(data_source)) {
-    message("Provided data is empty. Loading original package reference data...")
-    data("reference_ranges_df", package = "MetaNetis", envir = environment())
-    assign("reference_ranges_df", get("reference_ranges_df"), envir = .GlobalEnv)
+    if (file.exists(alt_file)) {
+      file.remove(alt_file)
+      message("Alternative reference ranges removed. Using default package reference data.")
+    } else {
+      message("No alternative reference ranges exist. Default package reference data will be used.")
+    }
     return(invisible(NULL))
   }
 
-  # 2. If Not empty
+  # 2. Validate new data
   new_baseline_df <- NULL
   required_cols <- c(
     "HMDB_ID", "Metabolite_Name", "Sample_Type", "Subject_Age_Description",
@@ -123,9 +130,9 @@ SetAltBaseline <- function(data_source = NULL) {
   # 3. In case the order is messed up
   new_baseline_df <- new_baseline_df[, required_cols]
 
-  # 4. Assign the loaded data frame to the target name in the environment.
-  assign("reference_ranges_df", new_baseline_df, envir = .GlobalEnv)
-  message("The default package reference data has been updated.")
+  # 4. Save the validated data as alt_ref_ranges.rda
+  saveRDS(new_baseline_df, file = alt_file)
+  message("Alternative reference ranges have been saved as 'alt_ref_ranges.rda' and will override the default when using GetRefRanges().")
 
 }
 

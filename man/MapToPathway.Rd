@@ -4,7 +4,7 @@
 \alias{MapToPathway}
 \title{Map Metabolites to Corresponding Pathways}
 \usage{
-MapToPathway(metab_results, match_by = "HMDB_ID")
+MapToPathway(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL)
 }
 \arguments{
 \item{metab_results}{A data frame output from MetabAnalysis.
@@ -13,6 +13,8 @@ Sample columns contain classifications ("Low", "Normal", "High", "Missing Refere
 
 \item{match_by}{A character string specifying the identifier type used in the
 row names (and the pathway map). Can be "HMDB_ID" (default) or "Metabolite_Name".}
+
+\item{alt_pwy_map}{Optional for alternative metabolite mapping. Demonstrated in example.}
 }
 \value{
 A data frame summarizing the activity for each pathway and sample,
@@ -81,4 +83,7 @@ Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{H
 
 \strong{Debugging Assistance:}
 Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+}
+\author{
+Yunze Du, \email{yunze.du@mail.utoronto.ca}
 }

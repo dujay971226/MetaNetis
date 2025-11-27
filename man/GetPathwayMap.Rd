@@ -39,3 +39,6 @@ Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{H
 \strong{Debugging Assistance:}
 Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
 }
+\author{
+Yunze Du, \email{yunze.du@mail.utoronto.ca}
+}

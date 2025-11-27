@@ -23,6 +23,8 @@
 #' map_df <- MetaNetis::GetPathwayMap()
 #' head(map_df)
 #'
+#' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}
+#'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
@@ -35,25 +37,22 @@
 #' @export
 GetPathwayMap <- function() {
 
-  data_object_name <- "metab_to_pwys"
+  # Initialize output
   map_df <- NULL
 
-  # Check if the object is already loaded in the environment.
-  if (exists(data_object_name, envir = .GlobalEnv)) {
-    map_df <- get(data_object_name, envir = .GlobalEnv)
+  # Path to default dataset in package
+  default_file <- system.file("data", "metab_to_pwys.rda", package = "MetaNetis")
 
-  } else {
-    # Attempt to load the data
-    load_success <- tryCatch({
-      data(data_object_name, package = "MetaNetis", envir = environment())
-      TRUE
-    }, error = function(e) {
-      stop("Pathway mapping data missing, please reinstall the package or Retry.")
-    })
+  # Attempt to load default dataset
+  load_success <- tryCatch({
+    map_df <- MetaNetis::metab_to_pwys
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
 
-    if (load_success) {
-      map_df <- get(data_object_name)
-    }
+  if (!load_success) {
+    stop("Failed to load default 'metab_to_pwys'. Please reinstall the MetaNetis package.")
   }
 
   return(map_df)

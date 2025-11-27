@@ -26,10 +26,6 @@ Development for $\text{MetaNetis}$ was conducted on version 4.5.1
 (2025-06-13 ucrt) using Windows 10 x64 (build 19045).
 
 
-    <!-- badges: start -->
-    <!-- badges: end -->
-
-
     ## Installation
 
     You can install the development version of MetaNetis from [GitHub](https://github.com/dujay971226/MetaNetis) with:
@@ -37,45 +33,47 @@ Development for $\text{MetaNetis}$ was conducted on version 4.5.1
 
     ``` r
     install.packages("devtools")
-    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/RtmpQHqxXd/temp_libpath566078438da'
+    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/Rtmp0MkysU/temp_libpath4cb012d05ad2'
     #> (as 'lib' is unspecified)
     #> package 'devtools' successfully unpacked and MD5 sums checked
     #> 
     #> The downloaded binary packages are in
-    #>  C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\downloaded_packages
+    #>  C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\downloaded_packages
     library("devtools")
     #> Warning: package 'devtools' was built under R version 4.5.2
     #> Loading required package: usethis
     devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
     #> Using GitHub PAT from the git credential store.
     #> Downloading GitHub repo dujay971226/MetaNetis@HEAD
-    #> magrittr (2.0.3 -> 2.0.4) [CRAN]
-    #> purrr    (1.1.0 -> 1.2.0) [CRAN]
-    #> Installing 2 packages: magrittr, purrr
-    #> Installing packages into 'C:/Users/dujay/AppData/Local/Temp/RtmpQHqxXd/temp_libpath566078438da'
+    #> RcppArmad... (15.0.2-2 -> 15.2.2-1) [CRAN]
+    #> S7           (0.2.0    -> 0.2.1   ) [CRAN]
+    #> ggplot2      (4.0.0    -> 4.0.1   ) [CRAN]
+    #> Installing 3 packages: RcppArmadillo, S7, ggplot2
+    #> Installing packages into 'C:/Users/dujay/AppData/Local/Temp/Rtmp0MkysU/temp_libpath4cb012d05ad2'
     #> (as 'lib' is unspecified)
     #> 
     #>   There is a binary version available but the source version is later:
-    #>       binary source needs_compilation
-    #> purrr  1.1.0  1.2.0              TRUE
+    #>                 binary   source needs_compilation
+    #> RcppArmadillo 15.0.2-2 15.2.2-1              TRUE
     #> 
-    #> package 'magrittr' successfully unpacked and MD5 sums checked
+    #> package 'S7' successfully unpacked and MD5 sums checked
+    #> package 'ggplot2' successfully unpacked and MD5 sums checked
     #> 
     #> The downloaded binary packages are in
-    #>  C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\downloaded_packages
-    #> installing the source package 'purrr'
+    #>  C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\downloaded_packages
+    #> installing the source package 'RcppArmadillo'
     #> ── R CMD build ─────────────────────────────────────────────────────────────────
-    #>          checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\remotes25245d0a125b\dujay971226-MetaNetis-44f53fa/DESCRIPTION' ...  ✔  checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpeKenKy\remotes25245d0a125b\dujay971226-MetaNetis-44f53fa/DESCRIPTION'
+    #>          checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\remotes3ab8fbf1093\dujay971226-MetaNetis-2ed6890/DESCRIPTION' ...  ✔  checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\remotes3ab8fbf1093\dujay971226-MetaNetis-2ed6890/DESCRIPTION'
     #>       ─  preparing 'MetaNetis':
     #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
     #>       ─  installing the package to build vignettes
-    #>          creating vignettes ...     creating vignettes ...   ✔  creating vignettes (14.4s)
-    #>       ─  checking for LF line-endings in source and make files and shell scripts (619ms)
+    #>          creating vignettes ...     creating vignettes ...   ✔  creating vignettes (14.3s)
+    #>       ─  checking for LF line-endings in source and make files and shell scripts (573ms)
     #>       ─  checking for empty or unneeded directories
     #>       ─  building 'MetaNetis_0.1.0.tar.gz'
     #>      
     #> 
-    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/RtmpQHqxXd/temp_libpath566078438da'
+    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/Rtmp0MkysU/temp_libpath4cb012d05ad2'
     #> (as 'lib' is unspecified)
     library("MetaNetis")
 
@@ -150,6 +148,8 @@ Csardi, G., & Nepusz, T. (2006). The igraph software package for complex
 network research. InterJournal, Complex Systems, 1695.
 
 Google. (2025). Gemini.
+
+Grolemund, G. (2015). Learn Shiny - Video Tutorials.
 
 Müller, K., & Wickham, H. (2023). tibble: Simple data frames (Version
 3.2.1). <https://tibble.tidyverse.org/>

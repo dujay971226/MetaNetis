@@ -37,7 +37,7 @@ This document gives a tour of MetaNetis (version 0.1.0). It was written in R Mar
 
 To download **MetaNetis**, use the following commands:
 
-``` {r}
+```{r}
 require("devtools")
 devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
 library("MetaNetis")
@@ -51,7 +51,7 @@ ls("package:MetaNetis")
 
 To list all sample datasets available in the package:
 
-``` {r}
+```{r}
 data(package = "MetaNetis")
 ```
 
@@ -74,7 +74,7 @@ your_data can be either a csv path or a data frame.
 
 Next, we will mock a metabolite sample dataset:
 
-``` {r}
+```{r}
 # Make a mock reference data
 mock_reference_data <- data.frame(
  'HMDB_ID' = c("HMDB0000001", "HMDB0000001", "HMDB0000002", "HMDB0000003", "HMDB0000005"),
@@ -126,7 +126,7 @@ Hence, [Low, Missing, High, Missing].
 As the dataset size is too small to show a network, I will be creating another set
 of mock data:
 
-``` {r}
+```{r}
 # Mock reference data and samples
 metab_to_pwys <- data.frame(
   Metabolite_Name = c("Glucose", "Fructose", "Lactate", "Pyruvate",
@@ -222,7 +222,7 @@ for (i in 1:50) {
 
 Now Plot!
 
-``` {r, fig.width=10, fig.height=8, out.width='600px'}
+```{r, fig.width=10, fig.height=8, out.width='600px'}
 PlotNetwork(result, "Sample1")
 ```
 
@@ -242,6 +242,8 @@ one metabolite. Node color is determined by pathway Net_Score: (red = hyperactiv
 - Csardi, G., & Nepusz, T. (2006). The igraph software package for complex network research. InterJournal, Complex Systems, 1695.
 
 - Google. (2025). Gemini.
+
+- Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
 
 - Müller, K., & Wickham, H. (2023). tibble: Simple data frames (Version 3.2.1). https://tibble.tidyverse.org/
 

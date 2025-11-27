@@ -23,10 +23,11 @@
 #'         and symbols (>, <, single values).
 #' }
 #'
-#' This function first checks for the existence of the object in the global environment
-#' and loads it from the package data if missing.
+#' It first checks if an alternative reference dataset (`alt_ref_ranges.rda`) exists
+#' in the package's data directory. If it does, that dataset is loaded and returned.
+#' Otherwise, the default `reference_ranges_df` included in the package is returned.
 #'
-#' @return Returns an the 'reference_range_df' data frame to the user. Includes the following columns:
+#' @return Returns an the 'ref_df' data frame to the user. Includes the following columns:
 #' \itemize{
 #'   \item \code{HMDB_ID}: Unique identifier of the metabolite.
 #'   \item \code{Metabolite_Name}: Common name of the metabolite.
@@ -45,6 +46,8 @@
 #' ref_df <- GetRefRanges()
 #' head(ref_df)
 #'
+#' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}
+#'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
@@ -57,24 +60,37 @@
 #' @export
 GetRefRanges <- function() {
 
-  data_object_name <- "reference_ranges_df"
+  # Initialize output
   ref_df <- NULL
 
-  # Check if the object is already loaded in the environment.
-  if (exists(data_object_name, envir = .GlobalEnv)) {
-    ref_df <- get(data_object_name, envir = .GlobalEnv)
+  # Path to optional alternative file in the package data directory
+  alt_file <- file.path(Sys.getenv("HOME"), ".MetaNetis", "alt_ref_ranges.rds")
 
-  } else {
-    # Attempt to load the data
+  # Attempt to load alternative dataset if it exists
+  if (file.exists(alt_file)) {
+    # Load alternative dataset directly
     load_success <- tryCatch({
-      data(data_object_name, package = "MetaNetis", envir = environment())
+      ref_df <- readRDS(alt_file)  # assuming alt file is saved as .rds for direct object
       TRUE
     }, error = function(e) {
-      stop("Reference data missing, please reinstall the package or load altertative reference range with SetAltBaseline().")
+      FALSE
     })
 
-    if (load_success) {
-      ref_df <- get(data_object_name)
+    if (!load_success) {
+      stop("Failed to load 'alt_ref_ranges.rda'. Please check the file.")
+    }
+
+  } else {
+    # Load default dataset from package
+    load_success <- tryCatch({
+      ref_df <- MetaNetis::reference_ranges_df
+      TRUE
+    }, error = function(e) {
+      FALSE
+    })
+
+    if (!load_success) {
+      stop("Failed to load default 'reference_ranges_df'. Please reinstall the MetaNetis package.")
     }
   }
 

@@ -14,10 +14,10 @@ MetabAnalysis(
 }
 \arguments{
 \item{data_input}{A data frame or a character string representing the file path
-to a CSV file containing metabolite concentrations. Rows must represent
-individual metabolites, and \strong{the row names must be the metabolite identifiers}
-(HMDB IDs or Metabolite Names). If names were used instead of IDS, please make sure
-they match the reference data's name exactly(obtained by GetRefRanges()).
+to a CSV file containing metabolite concentrations. 1st row must represent
+individual samples, and \strong{1st column must be the metabolite identifiers
+(HMDB IDs or Metabolite Names)}. If names were used instead of IDS, please make sure
+they match the reference data's name(obtained by GetRefRanges()).
 Columns represent samples.}
 
 \item{age}{A numeric vector where each element represents the age (in years)
@@ -120,4 +120,7 @@ Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{H
 
 \strong{Debugging Assistance:}
 Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+}
+\author{
+Yunze Du, \email{yunze.du@mail.utoronto.ca}
 }

@@ -20,15 +20,11 @@ knitr::opts_chunk$set(
 $\text{MetaNetis}$ is an \R package purpose-built to standardize the critical step of biological interpretation in quantitative metabolomics studies. It takes raw metabolite concentration data and the associated biological context (age and biospecimen type) and benchmarks it against a robust, internally-curated baseline derived from the $\text{Human Metabolome Database (HMDB)}$. The core biological data being analyzed are metabolite concentration values (e.g., \code{umol/L} or \code{ng/mL}) and their functional associations with metabolic pathways. MetaNetis significantly improves the current workflow in computational biology by providing $\text{novel, quantitative functional interpretation}$. $\text{Unlike tools such as MetaboAnalyst, which typically rely on pathway enrichment statistics}$, MetaNetis compares results against $\text{real-world, sample-matched metabolite reference data}$ and directly links individual concentration deviations to pathway activity (Hypoactive/Hyperactive). This unique approach eliminates the interpretation bias inherent in generic comparisons and allows for the precise, quantitative assessment of functional metabolic changes. Development for $\text{MetaNetis}$ was conducted on \R version 4.5.1 (2025-06-13 ucrt) using Windows 10 x64 (build 19045).
 ```
 
-<!-- badges: start -->
-<!-- badges: end -->
-
-
 ## Installation
 
 You can install the development version of MetaNetis from [GitHub](https://github.com/dujay971226/MetaNetis) with:
 
-``` {r}
+```{r}
 install.packages("devtools")
 library("devtools")
 devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
@@ -74,7 +70,7 @@ Critically, MetaNetis offers robust functionality to evaluate quantitative, clin
     }
 }
 
-``` {r}
+```{r}
 ls("package:MetaNetis")
 data(package = "MetaNetis") 
 browseVignettes("MetaNetis")
@@ -95,12 +91,13 @@ Author and Core Package ContributionsThe package MetaNetis was conceived and pri
 
 Generative AI Tool ContributionsThe generative AI tool, Gemini, served as a key collaborative partner throughout the development of MetaNetis. Its assistance was instrumental in ensuring code stability and clarity across the package. Specifically, Gemini was utilized to generate clear, comprehensive commenting and documentation for all core functions within the package. Furthermore, the AI tool provided essential debugging support for both the \code{MapToPathway} and \code{MetabAnalysis} functions, helping to resolve complex issues related to quantitative score aggregation and data matching across disparate input structures, ensuring the reliability of the core analytical pipeline.
 
-
 ## Reference
 
 Csardi, G., & Nepusz, T. (2006). The igraph software package for complex network research. InterJournal, Complex Systems, 1695.
 
 Google. (2025). Gemini.
+
+Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
 
 Müller, K., & Wickham, H. (2023). tibble: Simple data frames (Version 3.2.1). https://tibble.tidyverse.org/
 

@@ -9,10 +9,10 @@
 #' range not available, it will show "Missing Reference" instead.
 #'
 #' @param data_input A data frame or a character string representing the file path
-#'   to a CSV file containing metabolite concentrations. Rows must represent
-#'   individual metabolites, and \strong{the row names must be the metabolite identifiers}
-#'   (HMDB IDs or Metabolite Names). If names were used instead of IDS, please make sure
-#'   they match the reference data's name exactly(obtained by GetRefRanges()).
+#'   to a CSV file containing metabolite concentrations. 1st row must represent
+#'   individual samples, and \strong{1st column must be the metabolite identifiers
+#'   (HMDB IDs or Metabolite Names)}. If names were used instead of IDS, please make sure
+#'   they match the reference data's name(obtained by GetRefRanges()).
 #'   Columns represent samples.
 #' @param age A numeric vector where each element represents the age (in years)
 #'   for the corresponding sample column in \code{data_input}. The length of this
@@ -94,6 +94,8 @@
 #'   metabolite cannot be matched or no age-appropriate reference is found,
 #'   the classification will be "Missing Reference".
 #'
+#' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}
+#'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
@@ -128,7 +130,26 @@ MetabAnalysis <- function(data_input = NULL,
   user_df <- NULL
   # Load from CSV
   if (is.character(data_input) && file.exists(data_input)) {
-    user_df <- utils::read.csv(data_input, check.names = FALSE, row.names = 1)
+    user_df <- utils::read.csv(data_input, stringsAsFactors = FALSE, check.names = FALSE)
+
+    # Convert first row to column names and first column to row names ----
+    if (!is.null(user_df) && nrow(user_df) > 1 && ncol(user_df) > 1) {
+      # Save original column names temporarily
+      original_colnames <- colnames(user_df)
+
+      # Set column names from the first row
+      colnames(user_df) <- as.character(user_df[1, ])
+
+      # Remove the first row
+      user_df <- user_df[-1, ]
+
+      # Set row names from the first column
+      rownames(user_df) <- as.character(user_df[[1]])
+
+      # Remove the first column
+      user_df <- user_df[, -1, drop = FALSE]
+    }
+
   } else if (is.data.frame(data_input)) {
     # Load from data frame
     user_df <- data_input
@@ -166,7 +187,12 @@ MetabAnalysis <- function(data_input = NULL,
                 num_samples,
                 ")."))
   }
-  if (!is.character(sample_type) || length(sample_type) != num_samples) {
+
+  # If sample_type is a single string, recycle it to the needed length
+  if (is.character(sample_type) && length(sample_type) == 1) {
+    sample_type <- rep(sample_type, num_samples)
+  } else if (!is.character(sample_type) || length(sample_type) != num_samples) {
+    # If sample_type is a character vector
     stop(paste0("The 'sample_type' parameter must be a character vector whose length (",
                 length(sample_type),
                 ") matches the number of sample columns (",
@@ -230,8 +256,27 @@ MetabAnalysis <- function(data_input = NULL,
       metab_ref <- filtered_ref[filtered_ref[[match_ref_col]] == metab_id, ]
 
       classification <- "Missing Reference" # Default classification
+      metab_ref <- NULL
 
-      if (nrow(metab_ref) > 0 && !is.na(conc_value)) {
+      # If match by name
+      if (match_ref_col == "Metabolite_Name") {
+        # Substring matching (user's name is contained in ref_df's name)
+        match_indices <- grepl(metab_id, filtered_ref[[match_ref_col]], ignore.case = TRUE)
+        metab_ref <- filtered_ref[match_indices, ]
+
+        # If multiple matches are found, take the first one
+        if (nrow(metab_ref) > 1) {
+          warning(paste("Multiple reference ranges found for metabolite name containing '",
+                        metab_id, "'. Using the first match for sample ", sample_name, "."))
+          metab_ref <- metab_ref[1, ]
+        }
+
+      } else {
+        # Exact matching (used for HMDB_ID)
+        metab_ref <- filtered_ref[filtered_ref[[match_ref_col]] == metab_id, ]
+      }
+
+      if (!is.null(metab_ref) && nrow(metab_ref) > 0 && !is.na(conc_value)) {
 
         # Take the first matched range
         min_conc <- metab_ref[1, "Min_Concentration(Healthy)"]

@@ -7,7 +7,7 @@
 GetRefRanges()
 }
 \value{
-Returns an the 'reference_range_df' data frame to the user. Includes the following columns:
+Returns an the 'ref_df' data frame to the user. Includes the following columns:
 \itemize{
   \item \code{HMDB_ID}: Unique identifier of the metabolite.
   \item \code{Metabolite_Name}: Common name of the metabolite.
@@ -44,8 +44,9 @@ The key cleaning and standardization steps performed include:
         and symbols (>, <, single values).
 }
 
-This function first checks for the existence of the object in the global environment
-and loads it from the package data if missing.
+It first checks if an alternative reference dataset (`alt_ref_ranges.rda`) exists
+in the package's data directory. If it does, that dataset is loaded and returned.
+Otherwise, the default `reference_ranges_df` included in the package is returned.
 }
 \examples{
 # Example 1: load the reference dataset
@@ -60,4 +61,7 @@ Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{H
 
 \strong{Debugging Assistance:}
 Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+}
+\author{
+Yunze Du, \email{yunze.du@mail.utoronto.ca}
 }

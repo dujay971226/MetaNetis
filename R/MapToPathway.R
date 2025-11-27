@@ -18,6 +18,7 @@ utils::globalVariables(c(
 #'        Sample columns contain classifications ("Low", "Normal", "High", "Missing Reference").
 #' @param match_by A character string specifying the identifier type used in the
 #'        row names (and the pathway map). Can be "HMDB_ID" (default) or "Metabolite_Name".
+#' @param alt_pwy_map Optional for alternative metabolite mapping. Demonstrated in example.
 #'
 #' @return A data frame summarizing the activity for each pathway and sample,
 #'        with columns: Sample_ID, Pathway_Name, Net_Score, Metabolites_Affected, and Activity_Status.
@@ -67,6 +68,8 @@ utils::globalVariables(c(
 #'
 #' }
 #'
+#' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}
+#'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
@@ -77,7 +80,7 @@ utils::globalVariables(c(
 #'
 #' @import dplyr tidyr stringr tibble
 #' @export
-MapToPathway <- function(metab_results, match_by = "HMDB_ID") {
+MapToPathway <- function(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL) {
 
   # 1. Load Pathway Map and Input Validation ---
   if (!match_by %in% c("HMDB_ID", "Metabolite_Name")) {
@@ -85,7 +88,12 @@ MapToPathway <- function(metab_results, match_by = "HMDB_ID") {
   }
 
   # Load the metabolite-to-pathway map using the internal helper
-  pathway_map_df <- GetPathwayMap()
+  if (is.null(alt_pwy_map)) {
+    pathway_map_df <- GetPathwayMap()
+  } else {
+    pathway_map_df <- alt_pwy_map
+  }
+
 
   if (is.null(pathway_map_df) || nrow(pathway_map_df) == 0) {
     stop("Pathway mapping data ('metab_to_pwys') could not be loaded or is empty. Ensure the data is correctly loaded in the package.")
@@ -152,7 +160,12 @@ MapToPathway <- function(metab_results, match_by = "HMDB_ID") {
         Net_Score == 0 ~ "Normal Activity"
       )
     ) %>%
-    dplyr::select(Sample_ID, Pathway_Name, Net_Score, Metabolites_Affected, Activity_Status)
+    dplyr::select(Sample_ID,
+                  Pathway_Name,
+                  Net_Score,
+                  Metabolites_Affected,
+                  Activity_Status) %>%
+    dplyr::filter(Net_Score != 0)
 
   return(pathway_activity)
 }

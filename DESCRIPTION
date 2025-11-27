@@ -23,7 +23,10 @@ Imports:
     igraph,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    shiny,
+    shinyWidgets,
+    shinyjs
 Suggests: 
     knitr,
     devtools,
