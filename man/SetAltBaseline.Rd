@@ -44,7 +44,6 @@ ref_df <- data.frame(
   `Min_Age(year)` = c(18.0, 0.0, 13.0, 1.0),
   `Max_Age(year)` = c(Inf, 0.082, 18.0, 13.0),
   `Min_Concentration(Healthy)` = c(50.0, 0.15, 0.012, 3500.0),
-  `Mean_Concentration(Healthy)` = c(75.5, 0.25, 0.021, 5200.0),
   `Max_Concentration(Healthy)` = c(100.0, 0.50, 0.030, 8000.0),
   Unit = c("uM", "umol/mmol creatinine", "uM", "uM"),
   stringsAsFactors = FALSE,

@@ -123,7 +123,7 @@ test_that("Intergrated Test of the Whole Package", {
   expect_equal(creatine_results$Activity_Status[creatine_results$Sample_ID == "Sample_B"], "Normal Activity")
   expect_equal(creatine_results$Metabolites_Affected[creatine_results$Sample_ID == "Sample_B"], 1)
 
-  # --- Test Glycolysis (Glucose: HMDB0000002) ---
+  # Test Glycolysis (Glucose: HMDB0000002)
   glycolysis_results <- result_pwy %>%
     dplyr::filter(Pathway_Name == "Glycolysis") %>%
     dplyr::arrange(Sample_ID)
