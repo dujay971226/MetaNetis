@@ -38,7 +38,9 @@ test_that("SetAltBaseline correctly updates baseline reference data", {
 
   # Numeric values should match
   expect_equal(
-    result$`Mean_Concentration(Healthy)`, ref_df$`Mean_Concentration(Healthy)`)
+    result$`Max_Concentration(Healthy)`, ref_df$`Max_Concentration(Healthy)`)
+  expect_equal(
+    result$`Min_Concentration(Healthy)`, ref_df$`Min_Concentration(Healthy)`)
 
   # Unit consistency check
   expect_true(all(result$Unit %in% c("uM", "umol/mmol creatinine")))
