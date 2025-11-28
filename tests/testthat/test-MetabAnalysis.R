@@ -16,6 +16,8 @@ test_that(
     check.names = FALSE
   )
 
+  SetAltBaseline(mock_ref)
+
   # User data with known concentrations
   user_data <- data.frame(
     Sample_A = c(250, 9.0, 120), # low, normal, high values
@@ -31,8 +33,7 @@ test_that(
     data_input = user_data,
     age = age_vector,
     sample_type = sample_type_vector,
-    match_by = "HMDB_ID",
-    ref_data_override = mock_ref
+    match_by = "HMDB_ID"
   )
 
   expect_true(is.data.frame(results_id))
@@ -56,8 +57,7 @@ test_that(
     data_input = user_data_name,
     age = age_vector,
     sample_type = sample_type_vector,
-    match_by = "Metabolite_Name",
-    ref_data_override = mock_ref
+    match_by = "Metabolite_Name"
   )
 
   # Expected classifications
@@ -69,5 +69,8 @@ test_that(
   )
 
   expect_equal(results_name, expected_name)
+
+  # Set back to default reference ranges
+  SetAltBaseline()
 
 })

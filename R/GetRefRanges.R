@@ -52,7 +52,7 @@
 #'
 #' @examples
 #' # Example 1: load the reference dataset
-#' ref_df <- GetRefRanges()
+#' ref_df <- MetaNetis::GetRefRanges()
 #' head(ref_df)
 #'
 #' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}

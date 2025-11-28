@@ -7,8 +7,8 @@ utils::globalVariables(c(
 #'
 #' @description
 #' Maps the classification results from MetabAnalysis to metabolic pathways and
-#' determines the pathway's overall activity level (Hypoactive, Normal, or
-#' Hyperactive).
+#' determines the pathway's overall activity level (Hypoactive,Mild Activation,
+#' Normal, Mild Inhibition or Hyperactive) based on the sum of metabolite levels.
 #'
 #' @details This function enforces the use of the default metabolite-to-pathway
 #' map ('metab_to_pwys') loaded internally. It assumes that metabolite identifiers
@@ -47,9 +47,7 @@ utils::globalVariables(c(
 #'                 "BCAA Metabolism", "BCAA Metabolism", "Serotonin Synthesis",
 #'                 "Serotonin Synthesis"), stringsAsFactors = FALSE)
 #'
-#' # Assign the object to the global environment, so the internal helper function
-#' # can find it (simulating loaded package data).
-#' assign("metab_to_pwys", metab_to_pwys, envir = .GlobalEnv)
+#' MetaNetis::SetAltBaseline(metab_to_pwys)
 #'
 #' # Create input data where metabolite names are in the row names, simulating
 #' # the typical output from metab_results.
@@ -70,7 +68,9 @@ utils::globalVariables(c(
 #' rownames(metab_results) <- metabolites
 #'
 #' # Run the function
-#' result <- MapToPathway(metab_results, match_by = "Metabolite_Name")
+#' result <- MetaNetis::MapToPathway(metab_results, match_by = "Metabolite_Name")
+#'
+#' MetaNetis::SetAltBaseline()
 #'
 #' }
 #'

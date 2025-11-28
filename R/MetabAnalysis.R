@@ -23,8 +23,6 @@
 #' @param match_by A character string indicating whether the \strong{row names} in
 #'   \code{data_input} represent "HMDB_ID" (default) or "Metabolite_Name". Default
 #'   set to be "HMDB_ID".
-#' @param ref_data_override An optional data frame to use as the reference,
-#'   bypassing the \code{GetRefRanges()} call.
 #'
 #' @details
 #' This function assumes the user data has been formatted so that metabolite
@@ -52,8 +50,11 @@
 #'   'Max_Age(year)' = c(99, 99, 99, 99, 99),
 #'   'Min_Concentration(Healthy)' = c(500, 150, 4.0, 50, 200),
 #'   'Max_Concentration(Healthy)' = c(1000, 300, 7.0, 100, 400),
+#'   'Unit' = c("uM", "uM", "uM", "uM", "uM"),
 #'   check.names = FALSE
 #' )
+#'
+#' MetaNetis::SetAltBaseline(mock_reference_data)
 #'
 #' # User's Input
 #' user_data <- data.frame(
@@ -67,12 +68,11 @@
 #' sample_type_vector <- c("Urine", "Plasma") # Sample A is Urine, Sample B is Plasma
 #'
 #' # Test Case: Matching by HMDB_ID
-#' results_id <- MetabAnalysis(
+#' results_id <- MetaNetis::MetabAnalysis(
 #'   data_input = user_data,
 #'   age = age_vector,
 #'   sample_type = sample_type_vector,
 #'   match_by = "HMDB_ID",
-#'   ref_data_override = mock_reference_data
 #' )
 #' print(results_id)
 #'
@@ -81,7 +81,7 @@
 #' user_data_name <- user_data
 #' row.names(user_data_name) <- c("Alanine", "Glucose", "Creatinine", "Unknown_Metab")
 #'
-#' results_name <- MetabAnalysis(
+#' results_name <- MetaNetis::MetabAnalysis(
 #'   data_input = user_data_name,
 #'   age = age_vector,
 #'   sample_type = sample_type_vector,
@@ -90,6 +90,8 @@
 #' )
 #' print(results_name)
 #' }
+#'
+#' MetaNetis::SetAltBaseline()
 #'
 #' @return A data frame with the same structure as \code{data_input} (rows as
 #'   metabolites, columns as samples), where the numeric concentration values are
@@ -114,24 +116,18 @@
 MetabAnalysis <- function(data_input = NULL,
                           age = NULL,
                           sample_type = NULL,
-                          match_by = c("HMDB_ID", "Metabolite_Name"),
-                          ref_data_override = NULL) {
+                          match_by = c("HMDB_ID", "Metabolite_Name")) {
 
   match_by <- match.arg(match_by)
 
-  # 1. Load Reference Data and check if there's a override
-  if (!is.null(ref_data_override)) {
-    ref_df <- ref_data_override
-  } else {
-    ref_df <- GetRefRanges()
-  }
+  # 1. Load Reference Data
+  ref_df <- MetaNetis::GetRefRanges()
 
   # Confirm ref_df was loaded successfully
   if (is.null(ref_df) || nrow(ref_df) == 0) {
     stop(
       "Failed to retrieve or load reference ranges. Cannot perform MetabAnalysis.")
   } else {
-
   }
 
   # 2. Load User Data
@@ -144,22 +140,12 @@ MetabAnalysis <- function(data_input = NULL,
 
     # Convert first row to column names and first column to row names ----
     if (!is.null(user_df) && nrow(user_df) > 1 && ncol(user_df) > 1) {
-      # Save original column names temporarily
-      original_colnames <- colnames(user_df)
-
-      # Set column names from the first row
-      colnames(user_df) <- as.character(user_df[1, ])
-
-      # Remove the first row
-      user_df <- user_df[-1, ]
-
       # Set row names from the first column
       rownames(user_df) <- as.character(user_df[[1]])
 
       # Remove the first column
       user_df <- user_df[, -1, drop = FALSE]
     } else {
-
     }
 
   } else if (is.data.frame(data_input)) {
@@ -181,7 +167,6 @@ MetabAnalysis <- function(data_input = NULL,
       if (!is.numeric(x)) as.numeric(as.character(x)) else x
     }))
   } else {
-
   }
 
   # Extract metabolite identifiers (row names)
@@ -190,7 +175,6 @@ MetabAnalysis <- function(data_input = NULL,
     stop("Metabolite ID/names are missing. Data frame must have row names set
          (or the first column must be identifiers if loading from CSV with row.names = 1).")
   } else {
-
   }
 
   # Define which column in ref_df to match against (HMDB_ID or Metabolite_Name)
@@ -198,7 +182,9 @@ MetabAnalysis <- function(data_input = NULL,
 
   # Make sure ages are numbers. Also the length of age and sample_type matches sample size.
   num_samples <- ncol(conc_data)
-  if (!is.numeric(age) || length(age) != num_samples) {
+  if (is.numeric(age) && length(age) == 1) {
+    age <- rep(age, num_samples)
+  } else if (is.numeric(age) && length(age) != num_samples) {
     stop(paste0("The 'age' parameter must be a numeric vector whose length (",
                 length(age),
                 ") matches the number of sample columns (",
@@ -211,7 +197,7 @@ MetabAnalysis <- function(data_input = NULL,
   # If sample_type is a single string, recycle it to the needed length
   if (is.character(sample_type) && length(sample_type) == 1) {
     sample_type <- rep(sample_type, num_samples)
-  } else if (!is.character(sample_type) || length(sample_type) != num_samples) {
+  } else if (is.character(sample_type) && length(sample_type) != num_samples) {
     # If sample_type is a character vector
     stop(paste0("The 'sample_type' parameter must be a character vector whose length (",
                 length(sample_type),
@@ -220,6 +206,17 @@ MetabAnalysis <- function(data_input = NULL,
                 ")."))
   } else {
 
+  }
+
+  # Check if the types are allowed
+  allowed_type <- unique(ref_df$Sample_Type)
+
+  # Validate against allowed types
+  invalid <- sample_type[!sample_type %in% allowed_type]
+  if (length(invalid) > 0) {
+    stop(paste("Invalid sample types:",
+               paste(invalid, collapse = ", ")))
+  } else {
   }
 
   # Load corresponding ref column and convert to string

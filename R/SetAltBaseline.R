@@ -21,11 +21,9 @@
 #'   \item \code{HMDB_ID}: Unique identifier of the metabolite.
 #'   \item \code{Metabolite_Name}: Common name of the metabolite.
 #'   \item \code{Sample_Type}: Standardized biological fluid type (e.g., Blood/Serum/Plasma, CSF, Urine).
-#'   \item \code{Subject_Age_Description}: The original age group description from the HMDB dataset.
 #'   \item \code{Min_Age(year)}: Minimum age (in years) for the applicable age group.
 #'   \item \code{Max_Age(year)}: Maximum age (in years) for the applicable age group (\code{Inf} for general adult groups).
 #'   \item \code{Min_Concentration(Healthy)}: Minimum concentration observed in healthy individuals within the age group.
-#'   \item \code{Mean_Concentration(Healthy)}: Aggregated average concentration in healthy individuals within the age group.
 #'   \item \code{Max_Concentration(Healthy)}: Maximum concentration observed in healthy individuals within the age group.
 #'   \item \code{Unit}: The unit of measurement for concentration (e.g., uM, umol/mmol creatinine).
 #' }
@@ -36,9 +34,6 @@
 #'   HMDB_ID = c("HMDB0000190", "HMDB0000064", "HMDB0000001", "HMDB0001918"),
 #'   Metabolite_Name = c("L-Tryptophan", "Creatinine", "1-Methylhistidine", "Glucose"),
 #'   Sample_Type = c("Blood/Serum/Plasma", "Urine", "CSF", "Blood/Serum/Plasma"),
-#'   Subject_Age_Description = c("Adult (>18 years old)", "Newborn (0-30 days old)",
-#'    "Adolescent (13-18 years old)", "Children (1-13 years old)"),
-#'
 #'   `Min_Age(year)` = c(18.0, 0.0, 13.0, 1.0),
 #'   `Max_Age(year)` = c(Inf, 0.082, 18.0, 13.0),
 #'   `Min_Concentration(Healthy)` = c(50.0, 0.15, 0.012, 3500.0),
@@ -49,9 +44,9 @@
 #'   check.names = FALSE
 #' )
 #'
-#' SetAltBaseline(ref_df)
-#' GetRefRanges()
-#' SetAltBaseline()
+#' MetaNetis::SetAltBaseline(ref_df)
+#' MetaNetis::GetRefRanges()
+#' MetaNetis::SetAltBaseline()
 #'
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
@@ -89,9 +84,9 @@ SetAltBaseline <- function(data_source = NULL) {
   # 2. Validate new data
   new_baseline_df <- NULL
   required_cols <- c(
-    "HMDB_ID", "Metabolite_Name", "Sample_Type", "Subject_Age_Description",
+    "HMDB_ID", "Metabolite_Name", "Sample_Type",
     "Min_Age(year)", "Max_Age(year)", "Min_Concentration(Healthy)",
-    "Mean_Concentration(Healthy)", "Max_Concentration(Healthy)", "Unit"
+    "Max_Concentration(Healthy)", "Unit"
   )
 
   # Case 1. Input is a csv file path

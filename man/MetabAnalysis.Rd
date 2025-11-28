@@ -8,8 +8,7 @@ MetabAnalysis(
   data_input = NULL,
   age = NULL,
   sample_type = NULL,
-  match_by = c("HMDB_ID", "Metabolite_Name"),
-  ref_data_override = NULL
+  match_by = c("HMDB_ID", "Metabolite_Name")
 )
 }
 \arguments{
@@ -31,9 +30,6 @@ each sample. The length of this vector must match the number of samples.
 \item{match_by}{A character string indicating whether the \strong{row names} in
 \code{data_input} represent "HMDB_ID" (default) or "Metabolite_Name". Default
 set to be "HMDB_ID".}
-
-\item{ref_data_override}{An optional data frame to use as the reference,
-bypassing the \code{GetRefRanges()} call.}
 }
 \value{
 A data frame with the same structure as \code{data_input} (rows as
@@ -76,8 +72,11 @@ mock_reference_data <- data.frame(
   'Max_Age(year)' = c(99, 99, 99, 99, 99),
   'Min_Concentration(Healthy)' = c(500, 150, 4.0, 50, 200),
   'Max_Concentration(Healthy)' = c(1000, 300, 7.0, 100, 400),
+  'Unit' = c("uM", "uM", "uM", "uM", "uM"),
   check.names = FALSE
 )
+
+MetaNetis::SetAltBaseline(mock_reference_data)
 
 # User's Input
 user_data <- data.frame(
@@ -91,12 +90,11 @@ age_vector <- c(5, 20)
 sample_type_vector <- c("Urine", "Plasma") # Sample A is Urine, Sample B is Plasma
 
 # Test Case: Matching by HMDB_ID
-results_id <- MetabAnalysis(
+results_id <- MetaNetis::MetabAnalysis(
   data_input = user_data,
   age = age_vector,
   sample_type = sample_type_vector,
   match_by = "HMDB_ID",
-  ref_data_override = mock_reference_data
 )
 print(results_id)
 
@@ -105,7 +103,7 @@ print(results_id)
 user_data_name <- user_data
 row.names(user_data_name) <- c("Alanine", "Glucose", "Creatinine", "Unknown_Metab")
 
-results_name <- MetabAnalysis(
+results_name <- MetaNetis::MetabAnalysis(
   data_input = user_data_name,
   age = age_vector,
   sample_type = sample_type_vector,
@@ -114,6 +112,8 @@ results_name <- MetabAnalysis(
 )
 print(results_name)
 }
+
+MetaNetis::SetAltBaseline()
 
 }
 \references{

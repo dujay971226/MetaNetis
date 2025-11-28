@@ -51,20 +51,27 @@ ui <- fluidPage(
 
                  div(class = "description",
                      strong("Workflow Controls:"),
-                     "Use the buttons below to load data, view reference ranges, and run the analysis. Data should be a CSV with 'HMDB_ID' and 'Concentration' columns."
+                     "Use the buttons below to load data, view reference ranges,
+                     and run the analysis. Data should be a CSV with
+                     'HMDB_ID' and 'Concentration' columns."
                  ),
 
                  # Mode switch: match by HMBD ID or name
-                 div(style = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 5px 0; border-bottom: 1px solid #ddd;",
+                 div(style = "display: flex; align-items: center;
+                     justify-content: space-between; margin-bottom:
+                     20px; padding: 5px 0; border-bottom: 1px solid #ddd;",
 
                      # 1. Fixed "Match by" Label on the Left
                      div(strong("Match by:")),
 
                      # 2. Toggle Group: Label 1 | Switch | Label 2
-                     div(style = "display: flex; align-items: center; gap: 8px; flex-shrink: 0;",
+                     div(style = "display: flex; align-items: center;
+                         gap: 8px; flex-shrink: 0;",
 
                          # HMDB ID Label (Initially Active - Default)
-                         span(id = "hmdb_label", "HMDB ID", class = "match-label", style = "font-weight: bold; color: #4092C4;"),
+                         span(id = "hmdb_label", "HMDB ID",
+                              class = "match-label",
+                              style = "font-weight: bold; color: #4092C4;"),
 
                          # Switch Input (compact, without built-in labels)
                          switchInput(
@@ -79,28 +86,51 @@ ui <- fluidPage(
                          ),
 
                          # Metabolite Name Label (Initially Inactive)
-                         span(id = "name_label", "Metabolite_Name", class = "match-label", style = "font-weight: normal; color: #6C757D;")
+                         span(id = "name_label", "Metabolite_Name",
+                              class = "match-label",
+                              style = "font-weight: normal; color: #6C757D;")
                      )
                  ),
 
                  # Row 1
-                 actionButton("btn_view_ref", "View Reference Range", icon = icon("table")),
+                 actionButton("btn_view_ref", "View Reference Range",
+                              icon = icon("table")),
                  hr(),
 
                  # Row 2 (Data Loading/Input)
-                 actionButton("btn_upload_data", "Upload Your Own Dataset", icon = icon("upload")),
-                 actionButton("btn_try_testset", "Try Testset", icon = icon("vial-virus")),
+                 actionButton("btn_upload_data", "Upload Your Own Dataset",
+                              icon = icon("upload")),
+                 actionButton("btn_try_testset", "Try Testset",
+                              icon = icon("vial-virus")),
 
                  # Hidden inputs for upload
                  div(id = "upload_inputs", style = "margin-top: 15px;",
-                     fileInput("file_metabolites", "1. Metabolites Data (CSV)", accept = ".csv"),
-                     textInput("input_age", "2. Age Data (comma-sep. or single value)", value = "18"),
-                     textInput("input_sample_type", "3. Sample Type (comma-sep. or single value)", value = "Blood/Serum/Plasma")
+                     fileInput("file_metabolites",
+                               "1. Metabolites Data (CSV)",
+                               accept = ".csv"),
+                     p(strong("When Uploading you data, make sure it's in .csv
+                           format. The 1st row of the csv must be sample
+                           names and the 1st column of the csv mush be either
+                           titled \"HMDB_ID\" \"or Metabolite_Name\".")),
+                     p(strong("Remember to switch the HMDB ID/Metabolite Name button
+                           to the corresponding indentifier in your csv")),
+                     textInput("input_age",
+                               "2. Age Data (comma-sep. or single value)",
+                               value = "18"),
+                     textInput("input_sample_type",
+                               "3. Sample Type (comma-sep. or single value)",
+                               value = "Blood/Serum/Plasma"),
+                     p(strong("Allowed Sample Types:"),
+                       "Blood/Serum/Plasma, Feces, Breast Milk, Urine, CSF, Saliva,",
+                       "Cellular Cytoplasm, Sweat, Bile, Pericardial Effusion, Semen,",
+                       "Amniotic Fluid, Aqueous Humour, Ascites Fluid, Lymph, Tears"
+                     ),
                  ),
                  hr(),
 
                  # Row 3 (Analysis Run)
-                 actionButton("btn_run_analysis", "Run Analysis", icon = icon("play-circle"), class = "btn-primary"),
+                 actionButton("btn_run_analysis", "Run Analysis",
+                              icon = icon("play-circle"), class = "btn-primary"),
 
                  # Display Current Data Status
                  div(style = "margin-top: 20px; padding: 10px; border: 1px dashed #aaa; background-color: white;",
@@ -116,14 +146,22 @@ ui <- fluidPage(
               # Initial Welcome Text
               div(id = "welcome_text",
                   h3("Welcome to MetaNetis Analysis"),
-                  p("MetaNetis takes raw metabolite concentration data and the associated
-          biological context (age and biospecimen type) and benchmarks it against
-          a robust, internally-curated baseline derived from the Human Metabolome Database (HMDB). The core biological data being analyzed are metabolite concentration values (e.g., Lactate or Glucose) and their functional associations with metabolic pathways."),
+                  p("MetaNetis takes raw metabolite concentration data and the
+                    associated biological context (age and biospecimen type) and
+                    benchmarks it against a robust, internally-curated baseline
+                    derived from the Human Metabolome Database (HMDB). The core
+                    biological data being analyzed are metabolite concentration
+                    values (e.g., Lactate or Glucose) and their functional
+                    associations with metabolic pathways."),
                   p(strong("How to Use:")),
                   tags$ol(
-                    tags$li("Use 'View Reference Range' to inspect the baseline data."),
-                    tags$li("Load your data using 'Upload Your Own Dataset' or use the 'Try Testset' for a quick example."),
-                    tags$li("After loading data, click 'Run Analysis' to see the metabolite classification, pathway classification and pathway network plot.")
+                    tags$li("Use 'View Reference Range' to inspect
+                            the baseline data."),
+                    tags$li("Load your data using 'Upload Your Own Dataset'
+                            or use the 'Try Testset' for a quick example."),
+                    tags$li("After loading data, click 'Run Analysis' to
+                            see the metabolite classification,
+                            pathway classification and pathway network plot.")
                   )
               ),
 
@@ -178,7 +216,7 @@ server <- function(input, output, session) {
   observeEvent(input$btn_view_ref, {
     tryCatch({
       # CALLING PACKAGE FUNCTION: GetRefRanges()
-      ref_data <- GetRefRanges()
+      ref_data <- MetaNetis::GetRefRanges()
       output$ref_table_content <- DT::renderDT({
         DT::datatable(
           ref_data,
@@ -191,7 +229,8 @@ server <- function(input, output, session) {
       rv$display_mode <- "reference"
       rv$error_message <- NULL
     }, error = function(e) {
-      rv$error_message <- paste("Error accessing Reference Ranges (GetRefRanges()):", e$message)
+      rv$error_message <- paste(
+        "Error accessing Reference Ranges (GetRefRanges()):", e$message)
       rv$display_mode <- "error"
     })
   })
@@ -241,9 +280,14 @@ server <- function(input, output, session) {
     rv$metab_status <- NULL
     rv$pathway_status <- NULL
     rv$error_message <- NULL
-
     rv$display_mode <- "analysis"
-    showNotification("Test dataset loaded successfully. Click 'Run Analysis'.", type = "message")
+
+    # Clear the text inputs
+    updateTextInput(session, "input_age", value = "")
+    updateTextInput(session, "input_sample_type", value = "")
+
+    showNotification("Test dataset loaded successfully. Click 'Run Analysis'.",
+                     type = "message")
   })
 
   # Handle File Upload
@@ -251,14 +295,12 @@ server <- function(input, output, session) {
     req(input$file_metabolites)
     tryCatch({
       df <- read.csv(input$file_metabolites$datapath)
-
-      if (!(df[1, 1] %in% c("HMDB_ID", "Metabolite_Name"))) {
-        stop("The first column must be titled 'HMDB_ID' or 'Metabolite_Name'. Please check your CSV format.")
+      if (!(trimws(colnames(df)[1]) %in% c("HMDB_ID", "Metabolite_Name"))) {
+        stop("The first column must be titled 'HMDB_ID' or 'Metabolite_Name'.
+             Please check your CSV format.")
       }
 
-      # Convert first row to column names and first column to row names
-      colnames(df) <- as.character(df[1, ])
-      df <- df[-1, ]
+      # Convert first column to row names
       rownames(df) <- as.character(df[[1]])
       df <- df[, -1, drop = FALSE]
 
@@ -268,7 +310,8 @@ server <- function(input, output, session) {
       rv$pathway_status <- NULL
       rv$error_message <- NULL
       rv$display_mode <- "analysis"
-      showNotification("Metabolite data uploaded successfully.", type = "message")
+      showNotification("Metabolite data uploaded successfully.",
+                       type = "message")
 
     }, error = function(e) {
       rv$error_message <- paste("Data Upload Error:", e$message)
@@ -276,58 +319,64 @@ server <- function(input, output, session) {
     })
   })
 
-  # Update age and sample type on input change
-  observe({
-    age_input <- trimws(input$input_age)
-    if (nchar(age_input) > 0) {
-      rv$sample_age <- age_input
-    } else {
-      rv$sample_age <- 18
-    }
-
-    type_input <- trimws(input$input_sample_type)
-    if (nchar(type_input) > 0) {
-      rv$sample_type <- type_input
-    } else {
-      rv$sample_type <- "Blood/Serum/Plasma"
-    }
-  })
-
   # --- Analysis Handler ---
 
   observeEvent(input$btn_run_analysis, {
 
     # 1. Check for data
+    # Check whether metabolite data exist
     if (is.null(rv$metabolite_data) || nrow(rv$metabolite_data) == 0) {
-      rv$error_message <- "Please upload a dataset or use the Testset before running the analysis."
+      rv$error_message <- "Please upload a dataset or use the Testset
+                           before running the analysis."
       rv$display_mode <- "error"
       return()
+    }
+
+    # Process age input, only if no age info saved
+    age_input <- trimws(input$input_age)
+    if (nchar(age_input) == 0) {
+      rv$sample_age <- 18
+    } else {
+      age_vec <- suppressWarnings(as.numeric(trimws(strsplit(age_input, ",")[[1]])))
+      rv$sample_age <- age_vec
+    }
+
+    # Process sample_type, only if no type info saved
+    type_input <- trimws(input$input_sample_type)
+    if (nchar(type_input) == 0) {
+      rv$sample_type <- "Blood/Serum/Plasma"
+    } else {
+      type_vec <- trimws(strsplit(type_input, ",")[[1]])
+      rv$sample_type <- type_vec
     }
 
     # 2. Run Analysis Pipeline
     tryCatch({
 
       # Step A: MetabAnalysis (Classification) - CALLING PACKAGE FUNCTION
-      metab_status_df <- MetabAnalysis(
+      metab_status_df <- MetaNetis::MetabAnalysis(
         data_input = rv$metabolite_data,
-        age = rv$sample_age, # Assume GetRefRanges fetches the correct ref data
+        age = rv$sample_age,
         sample_type = rv$sample_type,
         match_by = rv$match_by
       )
 
       # Step B: MapToPathway (Aggregation) - CALLING PACKAGE FUNCTION
-      pathway_status_df <- MapToPathway(metab_results = metab_status_df,
-                                        match_by = rv$match_by)
+      pathway_status_df <- MetaNetis::MapToPathway(
+        metab_results = metab_status_df,
+        match_by = rv$match_by)
 
       # Store results
       rv$metab_status <- metab_status_df
       rv$pathway_status <- pathway_status_df
       rv$display_mode <- "analysis"
       rv$error_message <- NULL
-      showNotification("Analysis pipeline completed successfully!", type = "message")
+      showNotification("Analysis pipeline completed successfully!",
+                       type = "message")
 
     }, error = function(e) {
-      rv$error_message <- paste("Analysis Error (Check package functions):", e$message)
+      rv$error_message <- paste("Analysis Error (Check package functions):",
+                                e$message)
       rv$display_mode <- "error"
     })
   })
@@ -344,13 +393,21 @@ server <- function(input, output, session) {
       # Use an empty ggplot with a message if the ID is invalid
       return(
         ggplot() +
-          annotate("text", x = 0.5, y = 0.5, label = paste("Please enter a valid Sample ID.\nAvailable samples must match the column headers in your data."), size = 6, color = "#C44040") +
+          annotate("text",
+                   x = 0.5,
+                   y = 0.5,
+                   label = paste("Please enter a valid Sample ID.\nAvailable
+                                  samples must match the column headers in your
+                                  data."),
+                   size = 6,
+                   color = "#C44040") +
           theme_void()
       )
     }
 
     # 2. Call the PlotNetwork function
-    PlotNetwork(result = rv$pathway_status, sample_id = sample_id_to_plot)
+    MetaNetis::PlotNetwork(result = rv$pathway_status,
+                           sample_id = sample_id_to_plot)
   })
 
 
@@ -363,7 +420,8 @@ server <- function(input, output, session) {
     } else {
       num_samples <- ncol(rv$metabolite_data)
       paste(
-        "Loaded:", nrow(rv$metabolite_data), "metabolites in", num_samples, "samples.",
+        "Loaded:", nrow(rv$metabolite_data), "metabolites in",
+        num_samples, "samples.",
         "Match by:", rv$match_by, ".",
         "Age(s):", rv$sample_age,
         "Type(s):", rv$sample_type
@@ -416,7 +474,8 @@ server <- function(input, output, session) {
     plot_list <- lapply(sample_ids, function(id) {
       tagList(
         div(class = "plot-container",
-            tags$h4(paste("Network Analysis for Sample:", id), style = "font-weight: bold; color: #333; margin-bottom: 10px;"),
+            tags$h4(paste("Network Analysis for Sample:", id),
+                    style = "font-weight: bold; color: #333; margin-bottom: 10px;"),
             # Reference the dynamic output ID created in the observeEvent
             plotOutput(paste0("network_plot_", id), height = "350px")
         )
@@ -460,16 +519,30 @@ server <- function(input, output, session) {
         tabsetPanel(
           id = "analysis_tabs",
           tabPanel("Input Data", icon = icon("list-ol"),
-                   div(style = "margin-top: 20px; overflow-x: auto;", DT::DTOutput("input_data"))
+                   div(style = "margin-top: 20px; overflow-x: auto;",
+                       DT::DTOutput("input_data")),
+                   p(strong("This shows the input data for analysis."))
           ),
           tabPanel("Metabolite Analysis Table", icon = icon("list-ol"),
-                   div(style = "margin-top: 20px; overflow-x: auto;", DT::DTOutput("metab_table"))
+                   div(style = "margin-top: 20px; overflow-x: auto;",
+                       DT::DTOutput("metab_table")),
+                   p(strong("This shows the classification of each metabolite's
+                     concentration in each sample. Metabolite concentrations are
+                     ranked \"Normal,\" \"High,\" or \"Low\" based on the
+                     standardized healthy reference ranges provided by
+                     Human Metabolome Database(HMDB). If reference range not
+                     available, it will show \"Missing Reference\" instead."))
           ),
           tabPanel("Pathway Analysis Table", icon = icon("list-ol"),
-                   div(style = "margin-top: 20px; overflow-x: auto;", DT::DTOutput("pwy_table"))
+                   div(style = "margin-top: 20px; overflow-x: auto;",
+                       DT::DTOutput("pwy_table")),
+                   p(strong("This shows the pathway's overall activity level
+                     (Hypoactive, Mild Activation, Normal, Mild Inhibition or
+                     Hyperactive) based on the sum of metabolite levels."))
           ),
           tabPanel("Metabolite Network Plot", icon = icon("project-diagram"),
-                   div(style = "margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;",
+                   div(style = "margin-top: 20px; padding: 15px; border:
+                       1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;",
                        fluidRow(
                          column(9,
                                 # Sample ID Text Box
@@ -479,18 +552,29 @@ server <- function(input, output, session) {
                          ),
                          column(3, style = "padding-top: 25px;", # Align button with text input
                                 # New Plot Button
-                                actionButton("btn_plot_sample", "Plot", class = "btn-primary", style = "width: 100%;")
+                                actionButton("btn_plot_sample", "Plot",
+                                             class = "btn-primary",
+                                             style = "width: 100%;")
                          )
                        )
                    ),
                    # Single plot output
-                   plotOutput("single_network_plot", height = "600px")
+                   plotOutput("single_network_plot", height = "600px"),
+                   p(strong("This plot shows pathway-level network where each node is
+                     a pathway, and an edge connects two pathways if they share at
+                     least one metabolite.\nNode color is determined by pathway
+                     Net_Score (red = hyperactive, blue = hypoactive,
+                     grey = normal)")),
+                   p(strong("When testing lots of metabolites, edges will overlap and
+                     become less obvious. Could would around it by using
+                     MapToPathway() to set alternative Pathway-Metabolite
+                     relationships(Not available in browser interface)"))
           )
         )
       )
     } else {
       shinyjs::show("welcome_text")
-      return(NULL)
+      return(invisible(NULL))
     }
   })
 }

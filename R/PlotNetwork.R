@@ -11,7 +11,7 @@ utils::globalVariables(c(
 #' Builds a pathway-level network where each node is a pathway, and an edge
 #' connects two pathways if they share at least one metabolite.
 #' Node color is determined by pathway Net_Score
-#' (red = hyperactive, blue = hypoactive).
+#' (red = hyperactive, blue = hypoactive, grey = normal).
 #'
 #' @param result Tibble containing columns: Sample_ID, Pathway_Name, Net_Score
 #' @param sample_id Sample ID to visualize (character)
@@ -56,7 +56,7 @@ utils::globalVariables(c(
 #'   )
 #'  )
 #'
-#'  PlotNetwork(result, "Sample1")
+#'  MetaNetis::PlotNetwork(result, "Sample1")
 #'
 #' }
 #'
@@ -91,7 +91,7 @@ PlotNetwork <- function(result, sample_id) {
   }
 
   # 2. Retrieve metabolite-pathway relationships dynamically
-  metab_to_pwys <- GetPathwayMap()
+  metab_to_pwys <- MetaNetis::GetPathwayMap()
 
   # 3. Keep only pathways present in this sample
   rel_map <- metab_to_pwys %>%

@@ -18,7 +18,7 @@ Returns a \code{ggplot2} object (via \code{ggraph}).
 Builds a pathway-level network where each node is a pathway, and an edge
 connects two pathways if they share at least one metabolite.
 Node color is determined by pathway Net_Score
-(red = hyperactive, blue = hypoactive).
+(red = hyperactive, blue = hypoactive, grey = normal).
 }
 \examples{
 \dontrun{
@@ -58,7 +58,7 @@ result <- expand.grid(
   )
  )
 
- PlotNetwork(result, "Sample1")
+ MetaNetis::PlotNetwork(result, "Sample1")
 
 }
 

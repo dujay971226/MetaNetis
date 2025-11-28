@@ -59,7 +59,7 @@ Otherwise, the default `reference_ranges_df` included in the package is returned
 }
 \examples{
 # Example 1: load the reference dataset
-ref_df <- GetRefRanges()
+ref_df <- MetaNetis::GetRefRanges()
 head(ref_df)
 
 }

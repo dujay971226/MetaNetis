@@ -118,8 +118,11 @@ mock_reference_data <- data.frame(
  'Max_Age(year)' = c(99, 99, 99, 99, 99),
  'Min_Concentration(Healthy)' = c(500, 150, 4.0, 50, 200),
  'Max_Concentration(Healthy)' = c(1000, 300, 7.0, 100, 400),
+ 'Unit' = c("uM", "uM", "uM", "uM", "uM"),
  check.names = FALSE
 )
+
+MetaNetis::SetAltBaseline(mock_reference_data)
 
 # User's Input
 user_data <- data.frame(
@@ -153,9 +156,10 @@ results_id <- MetaNetis::MetabAnalysis(
  data_input = user_data,
  age = age_vector,
  sample_type = sample_type_vector,
- match_by = "HMDB_ID",
- ref_data_override = mock_reference_data
+ match_by = "HMDB_ID"
 )
+
+MetaNetis::SetAltBaseline()
 
 print(results_id)
 ```
@@ -208,9 +212,9 @@ rownames(metab_results) <- metabolites
 Then we can run our mapping:
 
 ``` {r}
-result <- MapToPathway(metab_results = metab_results,
-                       match_by = "Metabolite_Name",
-                       alt_pwy_map = metab_to_pwys)
+result <- MetaNetis::MapToPathway(metab_results = metab_results,
+                                  match_by = "Metabolite_Name",
+                                  alt_pwy_map = metab_to_pwys)
 result
 ```
 
@@ -282,7 +286,7 @@ for (i in 1:50) {
 Now Plot!
 
 ```{r, fig.width=10, fig.height=8, out.width='600px'}
-PlotNetwork(result, "Sample1")
+MetaNetis::PlotNetwork(result, "Sample1")
 ```
 
 each node is a pathway, and an edge connects two pathways if they share at least

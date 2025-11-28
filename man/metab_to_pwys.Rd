@@ -26,7 +26,7 @@ pathway activity based on metabolite concentrations.
 }
 \examples{
 # The preferred way to obtain this data is using the helper function:
-# map_df <- GetPathwayMap()
+# map_df <- MetaNetis::GetPathwayMap()
 # Or it can be directly loaded using data(metab_to_pwys)
 \dontrun{
   data(metab_to_pwys)
