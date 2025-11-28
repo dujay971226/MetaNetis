@@ -1,3 +1,4 @@
+# To Avoid Error Message
 utils::globalVariables(c(
   "Score", "Metabolites_Affected", "Activity_Status"
 ))
@@ -6,25 +7,30 @@ utils::globalVariables(c(
 #'
 #' @description
 #' Maps the classification results from MetabAnalysis to metabolic pathways and
-#' determines the pathway's overall activity level (Hypoactive, Normal, or Hyperactive).
+#' determines the pathway's overall activity level (Hypoactive, Normal, or
+#' Hyperactive).
 #'
 #' @details This function enforces the use of the default metabolite-to-pathway
 #' map ('metab_to_pwys') loaded internally. It assumes that metabolite identifiers
-#' (HMDB_ID or Metabolite_Name) are stored in the **row names** of the 'metab_results'
-#'  data frame, not in an explicit column.
+#' (HMDB_ID or Metabolite_Name) are stored in the **row names** of the
+#' 'metab_results' data frame, not in an explicit column.
 #'
 #' @param metab_results A data frame output from MetabAnalysis.
 #'        Metabolite identifiers must be in the **row names**.
-#'        Sample columns contain classifications ("Low", "Normal", "High", "Missing Reference").
+#'        Sample columns contain classifications
+#'        ("Low", "Normal", "High", "Missing Reference").
 #' @param match_by A character string specifying the identifier type used in the
-#'        row names (and the pathway map). Can be "HMDB_ID" (default) or "Metabolite_Name".
-#' @param alt_pwy_map Optional for alternative metabolite mapping. Demonstrated in example.
+#'        row names (and the pathway map). Can be "HMDB_ID" (default)
+#'        or "Metabolite_Name".
+#' @param alt_pwy_map Optional for alternative metabolite mapping.
+#'        Demonstrated in example.
 #'
 #' @return A data frame summarizing the activity for each pathway and sample,
-#'        with columns: Sample_ID, Pathway_Name, Net_Score, Metabolites_Affected, and Activity_Status.
-#'        "Low" from metab_results will be considered as -1 Net score, and "High"
-#'        will be +1. Missing and Normal will simply be +0. The more metabolites
-#'        expressed in that pathway, the more active it is.
+#'        with columns: Sample_ID, Pathway_Name, Net_Score, Metabolites_Affected,
+#'        and Activity_Status. "Low" from metab_results will be considered
+#'        as -1 Net score, and "High" will be +1. Missing and Normal will
+#'        simply be +0. The more metabolites expressed in that pathway,
+#'        the more active it is.
 #'
 #' @examples
 #' \dontrun{
@@ -73,18 +79,31 @@ utils::globalVariables(c(
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+#' \href{https://hmdb.ca/}{HMDB}.
 #'
 #' \strong{Debugging Assistance:}
-#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+#' \href{https://gemini.google.com}{Gemini}
 #'
 #' @import dplyr tidyr stringr tibble
 #' @export
-MapToPathway <- function(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL) {
+MapToPathway <- function(metab_results,
+                         match_by = "HMDB_ID",
+                         alt_pwy_map = NULL) {
 
-  # 1. Load Pathway Map and Input Validation ---
+  # match_by Validation
   if (!match_by %in% c("HMDB_ID", "Metabolite_Name")) {
     stop("The 'match_by' argument must be 'HMDB_ID' or 'Metabolite_Name'.")
+  } else {
+
+  }
+
+  # metab_results validation
+  if (!is.data.frame(metab_results)) {
+    stop("Error: 'metab_results' is not a data frame!")
+  } else {
+
   }
 
   # Load the metabolite-to-pathway map using the internal helper
@@ -96,12 +115,18 @@ MapToPathway <- function(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL
 
 
   if (is.null(pathway_map_df) || nrow(pathway_map_df) == 0) {
-    stop("Pathway mapping data ('metab_to_pwys') could not be loaded or is empty. Ensure the data is correctly loaded in the package.")
+    stop("Pathway mapping data ('metab_to_pwys') could not be loaded or is empty.
+         Ensure the data is correctly loaded in the package.")
+  } else {
+
   }
 
   # Ensure the necessary columns exist in the pathway map
   if (!all(c(match_by, "Pathway_Name") %in% names(pathway_map_df))) {
-    stop(paste0("Pathway map ('metab_to_pwys') must contain the matching column ('", match_by, "') and 'Pathway_Name' columns."))
+    stop(paste0("Pathway map ('metab_to_pwys') must contain the matching column
+                ('", match_by, "') and 'Pathway_Name' columns."))
+  } else {
+
   }
 
   # 2. Prepare Scoring Data ---
@@ -113,6 +138,8 @@ MapToPathway <- function(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL
 
   if (length(sample_cols) == 0) {
     stop("No sample columns (concentration scores) found in metab_results.")
+  } else {
+
   }
 
   # Convert the wide result to long format for easier joining
@@ -138,7 +165,8 @@ MapToPathway <- function(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL
       pathway_map_df,
       by = match_by # Use the dynamically set column name for the join
     ) %>%
-    # Remove any metabolites that were scored but failed to map to a pathway in the provided map
+    # Remove any metabolites that were scored but failed to map to a pathway
+    # in the provided map
     tidyr::drop_na(Pathway_Name)
 
   # 4. Calculate the Net Score for each Sample and Pathway ---
@@ -164,8 +192,7 @@ MapToPathway <- function(metab_results, match_by = "HMDB_ID", alt_pwy_map = NULL
                   Pathway_Name,
                   Net_Score,
                   Metabolites_Affected,
-                  Activity_Status) %>%
-    dplyr::filter(Net_Score != 0)
+                  Activity_Status)
 
   return(pathway_activity)
 }

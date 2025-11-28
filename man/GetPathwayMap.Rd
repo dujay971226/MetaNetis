@@ -7,11 +7,13 @@
 GetPathwayMap()
 }
 \value{
-Returns the \code{metab_to_pwys} data frame to the user. Includes the following columns:
+Returns the \code{metab_to_pwys} data frame to the user. Includes the
+following columns:
 \itemize{
   \item \code{Metabolite_Name}: Standardized common name of the metabolite.
   \item \code{HMDB_ID}: Unique identifier of the metabolite
-  \item \code{Pathway_Name}: Standardized name of the biochemical pathway the metabolite belongs to.
+  \item \code{Pathway_Name}: Standardized name of the biochemical pathway
+   the metabolite belongs to.
 }
 }
 \description{
@@ -37,7 +39,8 @@ Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
 Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
 
 \strong{Debugging Assistance:}
-Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+ \href{https://gemini.google.com}{Gemini}
 }
 \author{
 Yunze Du, \email{yunze.du@mail.utoronto.ca}

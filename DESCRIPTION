@@ -26,7 +26,8 @@ Imports:
     tidyr,
     shiny,
     shinyWidgets,
-    shinyjs
+    shinyjs,
+    DT
 Suggests: 
     knitr,
     devtools,

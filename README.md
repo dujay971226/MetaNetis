@@ -5,86 +5,50 @@
 
 ## Description
 
-$\text{MetaNetis}$ is an package purpose-built to standardize the
-critical step of biological interpretation in quantitative metabolomics
-studies. It takes raw metabolite concentration data and the associated
-biological context (age and biospecimen type) and benchmarks it against
-a robust, internally-curated baseline derived from the
+$\text{MetaNetis}$ is an package purpose-built a novel tool for
+metabolomics studies by classifying metabolite samples against a robust,
+internally-curated baseline derived from the
 $\text{Human Metabolome Database (HMDB)}$. The core biological data
-being analyzed are metabolite concentration values (e.g., or ) and their
-functional associations with metabolic pathways. MetaNetis significantly
-improves the current workflow in computational biology by providing
-$\text{novel, quantitative functional interpretation}$.
-$\text{Unlike tools such as MetaboAnalyst, which typically rely on pathway enrichment statistics}$,
-MetaNetis compares results against
+being analyzed are metabolite concentration values (e.g., 12 umol/L of
+glucose in blood sample) and their functional associations with
+metabolic pathways. MetaNetis significantly improves the current
+workflow in computational biology by providing
+$\text{novel, quantitative functional interpretation}$. Unlike tools
+such as MetaboAnalyst, which typically rely on pathway enrichment
+statistics, MetaNetis compares results against
 $\text{real-world, sample-matched metabolite reference data}$ and
 directly links individual concentration deviations to pathway activity
 (Hypoactive/Hyperactive). This unique approach eliminates the
 interpretation bias inherent in generic comparisons and allows for the
 precise, quantitative assessment of functional metabolic changes.
-Development for $\text{MetaNetis}$ was conducted on version 4.5.1
+Development for $\text{MetaNetis}$ was conducted on R version 4.5.1
 (2025-06-13 ucrt) using Windows 10 x64 (build 19045).
 
+## Installation
 
-    ## Installation
+You can install the development version of MetaNetis from
+[GitHub](https://github.com/dujay971226/MetaNetis) with:
 
-    You can install the development version of MetaNetis from [GitHub](https://github.com/dujay971226/MetaNetis) with:
+``` r
+install.packages("devtools")
+library("devtools")
+devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
+library("MetaNetis")
+```
 
+To run the Shiny app:
 
-    ``` r
-    install.packages("devtools")
-    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/Rtmp0MkysU/temp_libpath4cb012d05ad2'
-    #> (as 'lib' is unspecified)
-    #> package 'devtools' successfully unpacked and MD5 sums checked
-    #> 
-    #> The downloaded binary packages are in
-    #>  C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\downloaded_packages
-    library("devtools")
-    #> Warning: package 'devtools' was built under R version 4.5.2
-    #> Loading required package: usethis
-    devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
-    #> Using GitHub PAT from the git credential store.
-    #> Downloading GitHub repo dujay971226/MetaNetis@HEAD
-    #> RcppArmad... (15.0.2-2 -> 15.2.2-1) [CRAN]
-    #> S7           (0.2.0    -> 0.2.1   ) [CRAN]
-    #> ggplot2      (4.0.0    -> 4.0.1   ) [CRAN]
-    #> Installing 3 packages: RcppArmadillo, S7, ggplot2
-    #> Installing packages into 'C:/Users/dujay/AppData/Local/Temp/Rtmp0MkysU/temp_libpath4cb012d05ad2'
-    #> (as 'lib' is unspecified)
-    #> 
-    #>   There is a binary version available but the source version is later:
-    #>                 binary   source needs_compilation
-    #> RcppArmadillo 15.0.2-2 15.2.2-1              TRUE
-    #> 
-    #> package 'S7' successfully unpacked and MD5 sums checked
-    #> package 'ggplot2' successfully unpacked and MD5 sums checked
-    #> 
-    #> The downloaded binary packages are in
-    #>  C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\downloaded_packages
-    #> installing the source package 'RcppArmadillo'
-    #> ── R CMD build ─────────────────────────────────────────────────────────────────
-    #>          checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\remotes3ab8fbf1093\dujay971226-MetaNetis-2ed6890/DESCRIPTION' ...  ✔  checking for file 'C:\Users\dujay\AppData\Local\Temp\RtmpSWpYIJ\remotes3ab8fbf1093\dujay971226-MetaNetis-2ed6890/DESCRIPTION'
-    #>       ─  preparing 'MetaNetis':
-    #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-    #>       ─  installing the package to build vignettes
-    #>          creating vignettes ...     creating vignettes ...   ✔  creating vignettes (14.3s)
-    #>       ─  checking for LF line-endings in source and make files and shell scripts (573ms)
-    #>       ─  checking for empty or unneeded directories
-    #>       ─  building 'MetaNetis_0.1.0.tar.gz'
-    #>      
-    #> 
-    #> Installing package into 'C:/Users/dujay/AppData/Local/Temp/Rtmp0MkysU/temp_libpath4cb012d05ad2'
-    #> (as 'lib' is unspecified)
-    library("MetaNetis")
+``` r
+runMetaNetis()
+```
 
 ## 🎯 Overview
 
 MetaNetis is an $\text{R}$ package designed to bridge the gap between
 raw metabolomics data and deep biological interpretation. It provides a
-standardized framework for benchmarking user-supplied metabolite
-concentrations against a robust, healthy human reference population
-derived from resources like the Human Metabolome Database
-($\text{HMDB}$).
+novel framework for benchmarking user-supplied metabolite concentrations
+against a robust, healthy human reference population derived from
+resources like the Human Metabolome Database ($\text{HMDB}$).
 
 The package’s core value lies in its ability to generate high-confidence
 classifications and translate those classifications into functional
@@ -95,12 +59,12 @@ quantitative, clinical sampled data such as blood and urine. This
 capability is a key differentiator from existing tools; for instance,
 popular platforms like MetaboAnalyst are often restricted to qualitative
 analysis, relying solely on pathway enrichment. MetaNetis moves beyond
-simple enrichment to provide a direct, directional assessment of
-metabolic activity (e.g., hyper- or hypo-regulation), making it a
-powerful tool for metabolomic and clinical research.
+enrichment to provide a direct, directional assessment of metabolic
+activity (e.g., hyper- or hypo-regulation), making it a powerful tool
+for metabolomic and clinical research.
 
 <figure>
-<img src="vignettes/package_overview.png"
+<img src="vignettes/package_overview.jpg"
 alt="MetaNetis Package Overview" />
 <figcaption aria-hidden="true">MetaNetis Package Overview</figcaption>
 </figure>
@@ -109,13 +73,38 @@ alt="MetaNetis Package Overview" />
 
 ``` r
 ls("package:MetaNetis")
-#> [1] "GetPathwayMap"       "GetRefRanges"        "MapToPathway"       
-#> [4] "metab_to_pwys"       "MetabAnalysis"       "PlotNetwork"        
-#> [7] "reference_ranges_df" "SetAltBaseline"
 data(package = "MetaNetis") 
 browseVignettes("MetaNetis")
-#> starting httpd help server ... done
 ```
+
+`MetaNetis` contains 7 functions.
+
+1.  ***GetRefRanges*** for retrieving the established reference
+    concentration ranges sourced from HMDB (Human Metabolome Database),
+    used to classify metabolite values.
+
+2.  ***SetAltBaseline*** for setting an alternative comparison baseline
+    (instead of the standard reference) for subsequent metabolite
+    analysis.
+
+3.  ***MetabAnalysis*** for comparing raw metabolite concentration
+    values in samples against reference ranges or baselines to determine
+    if each metabolite is ‘High,’ ‘Low,’ or ‘Normal.’
+
+4.  ***GetPathwayMap*** for loading the internal data frame that links
+    individual metabolite identifiers to their respective metabolic
+    pathways sourced from HMDB.
+
+5.  ***MapToPathway*** for aggregating the metabolite concentration
+    status scores for a given sample into a single Net Score for each
+    pathway, indicating pathway activity status.
+
+6.  ***PlotNetwork*** for generating a visual network graph that
+    displays pathways as nodes, colored by their Net Score, and links
+    them based on the number of shared metabolites.
+
+7.  ***runMetaNetis*** for executing the shiny interface, including
+    loading sample data, scoring, mapping, and network visualization.
 
 ## Contribution
 
@@ -144,6 +133,10 @@ analytical pipeline.
 
 ## Reference
 
+Chong, J., & Xia, J. (2018). MetaboAnalystR: an R package for flexible
+and reproducible analysis of metabolomics data. Bioinformatics, 34(24),
+4313–4314. <https://doi.org/10.1093/bioinformatics/bty528>
+
 Csardi, G., & Nepusz, T. (2006). The igraph software package for complex
 network research. InterJournal, Complex Systems, 1695.
 
@@ -169,7 +162,7 @@ grammar of data manipulation (Version 1.1.3).
 <https://dplyr.tidyverse.org/>
 
 Wickham, H., & Hester, J. (2024). stringr: Simple, consistent string
-routines (Version 1.5.1) \[R package\]. <https://stringr.tidyverse.org/>
+routines (Version 1.5.1). <https://stringr.tidyverse.org/>
 
 Wickham, H., & Ruiz, M. (2023). tidyr: Tidy messy data (Version 1.3.0).
 <https://tidyr.tidyverse.org/>

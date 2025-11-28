@@ -1,10 +1,11 @@
+# To Avoid Error Message
 utils::globalVariables(c(
   "Sample_ID", "Pathway_Name", "Net_Score",
   "Pathway_Name.x", "Pathway_Name.y",
   "Shared_Metabolites", "name", "aes"
 ))
 
-#' @title Plot pathway network for a given sample
+#' @title Plot pathway network for one given sample
 #'
 #' @description
 #' Builds a pathway-level network where each node is a pathway, and an edge
@@ -64,10 +65,12 @@ utils::globalVariables(c(
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+#' \href{https://hmdb.ca/}{HMDB}.
 #'
 #' \strong{Debugging Assistance:}
-#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+#' \href{https://gemini.google.com}{Gemini}
 #'
 #' @importFrom dplyr filter select rename count inner_join
 #' @importFrom igraph graph_from_data_frame layout_with_kk
@@ -78,11 +81,14 @@ PlotNetwork <- function(result, sample_id) {
 
   # 1. Filter to the chosen sample
   df <- result %>%
+    dplyr::filter(Net_Score != 0) %>%
     dplyr::filter(Sample_ID == sample_id) %>%
     dplyr::select(Pathway_Name, Net_Score)
 
   if (nrow(df) == 0) {
     stop(paste("No data found for Sample_ID:", sample_id))
+  } else {
+
   }
 
   # 2. Retrieve metabolite-pathway relationships dynamically
@@ -94,6 +100,8 @@ PlotNetwork <- function(result, sample_id) {
 
   if (nrow(rel_map) == 0) {
     stop("No metabolite-pathway relationships found for selected pathways.")
+  } else {
+
   }
 
   # 4. Get Vertices

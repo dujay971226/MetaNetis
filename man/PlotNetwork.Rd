@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotNetwork.R
 \name{PlotNetwork}
 \alias{PlotNetwork}
-\title{Plot pathway network for a given sample}
+\title{Plot pathway network for one given sample}
 \usage{
 PlotNetwork(result, sample_id)
 }
@@ -66,10 +66,12 @@ result <- expand.grid(
 \references{
 \strong{HMDB Metabolite Reference Data}:
 Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+\href{https://hmdb.ca/}{HMDB}.
 
 \strong{Debugging Assistance:}
-Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+\href{https://gemini.google.com}{Gemini}
 }
 \author{
 Yunze Du, \email{yunze.du@mail.utoronto.ca}

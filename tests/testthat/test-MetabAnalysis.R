@@ -1,4 +1,5 @@
-test_that("MetabAnalysis returns correct classifications for HMDB_ID and Metabolite_Name", {
+test_that(
+  "MetabAnalysis returns correct classifications for HMDB_ID and Metabolite_Name", {
 
   # Mock reference data
   mock_ref <- data.frame(

@@ -19,8 +19,12 @@ test_that("GetRefRanges runs correctly and returns valid structure", {
   expect_type(ref_df$`Max_Concentration(Healthy)`, "double")
 
   # Logical sanity checks
-  expect_true(all(ref_df$`Min_Concentration(Healthy)` <= ref_df$`Max_Concentration(Healthy)`))
-  expect_true(all(is.finite(ref_df$`Mean_Concentration(Healthy)` | is.na(ref_df$`Mean_Concentration(Healthy)`))))
+  expect_true(all(ref_df$`Min_Concentration(Healthy)` <=
+                    ref_df$`Max_Concentration(Healthy)`))
+  expect_true(all(
+    is.finite(ref_df$`Mean_Concentration(Healthy)`) |
+      is.na(ref_df$`Mean_Concentration(Healthy)`)
+  ))
 
   # Units should be non-empty
   expect_true(all(nchar(ref_df$Unit) > 0))

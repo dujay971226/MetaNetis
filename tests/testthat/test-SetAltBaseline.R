@@ -2,7 +2,8 @@ test_that("SetAltBaseline correctly updates baseline reference data", {
   # Mock reference dataframe
   ref_df <- data.frame(
     HMDB_ID = c("HMDB0000190", "HMDB0000064", "HMDB0000001", "HMDB0001918"),
-    Metabolite_Name = c("L-Tryptophan", "Creatinine", "1-Methylhistidine", "Glucose"),
+    Metabolite_Name = c("L-Tryptophan", "Creatinine",
+                        "1-Methylhistidine", "Glucose"),
     Sample_Type = c("Blood/Serum/Plasma", "Urine", "CSF", "Blood/Serum/Plasma"),
     Subject_Age_Description = c(
       "Adult (>18 years old)",
@@ -36,7 +37,8 @@ test_that("SetAltBaseline correctly updates baseline reference data", {
   expect_equal(result$Metabolite_Name, ref_df$Metabolite_Name)
 
   # Numeric values should match
-  expect_equal(result$`Mean_Concentration(Healthy)`, ref_df$`Mean_Concentration(Healthy)`)
+  expect_equal(
+    result$`Mean_Concentration(Healthy)`, ref_df$`Mean_Concentration(Healthy)`)
 
   # Unit consistency check
   expect_true(all(result$Unit %in% c("uM", "umol/mmol creatinine")))

@@ -11,11 +11,13 @@
 #' This function checks for the existence of the object in the R environment
 #' and assumes it was pre-loaded via \code{usethis::use_data()}.
 #'
-#' @return Returns the \code{metab_to_pwys} data frame to the user. Includes the following columns:
+#' @return Returns the \code{metab_to_pwys} data frame to the user. Includes the
+#' following columns:
 #' \itemize{
 #'   \item \code{Metabolite_Name}: Standardized common name of the metabolite.
 #'   \item \code{HMDB_ID}: Unique identifier of the metabolite
-#'   \item \code{Pathway_Name}: Standardized name of the biochemical pathway the metabolite belongs to.
+#'   \item \code{Pathway_Name}: Standardized name of the biochemical pathway
+#'    the metabolite belongs to.
 #' }
 #'
 #' @examples
@@ -31,7 +33,8 @@
 #' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
 #'
 #' \strong{Debugging Assistance:}
-#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+#'  \href{https://gemini.google.com}{Gemini}
 #'
 #' @importFrom utils data
 #' @export
@@ -41,7 +44,8 @@ GetPathwayMap <- function() {
   map_df <- NULL
 
   # Path to default dataset in package
-  default_file <- system.file("data", "metab_to_pwys.rda", package = "MetaNetis")
+  default_file <- system.file("data", "metab_to_pwys.rda",
+                              package = "MetaNetis")
 
   # Attempt to load default dataset
   load_success <- tryCatch({
@@ -52,7 +56,10 @@ GetPathwayMap <- function() {
   })
 
   if (!load_success) {
-    stop("Failed to load default 'metab_to_pwys'. Please reinstall the MetaNetis package.")
+    stop(
+      "Failed to load default 'metab_to_pwys'. Please reinstall the MetaNetis package.")
+  } else {
+
   }
 
   return(map_df)

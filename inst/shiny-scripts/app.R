@@ -123,7 +123,7 @@ ui <- fluidPage(
                   tags$ol(
                     tags$li("Use 'View Reference Range' to inspect the baseline data."),
                     tags$li("Load your data using 'Upload Your Own Dataset' or use the 'Try Testset' for a quick example."),
-                    tags$li("After loading data, click 'Run Analysis' to see the metabolite classification and pathway network plot.")
+                    tags$li("After loading data, click 'Run Analysis' to see the metabolite classification, pathway classification and pathway network plot.")
                   )
               ),
 
@@ -179,9 +179,15 @@ server <- function(input, output, session) {
     tryCatch({
       # CALLING PACKAGE FUNCTION: GetRefRanges()
       ref_data <- GetRefRanges()
-      output$ref_table_content <- renderTable({ ref_data },
-                                              caption = "Reference Range Data (HMDB Baseline)",
-                                              caption.placement = "top", striped = TRUE, hover = TRUE)
+      output$ref_table_content <- DT::renderDT({
+        DT::datatable(
+          ref_data,
+          options = list(pageLength = 20, autoWidth = TRUE, scrollX = TRUE),
+          filter = "top",
+          rownames = TRUE
+        )
+      })
+
       rv$display_mode <- "reference"
       rv$error_message <- NULL
     }, error = function(e) {
@@ -365,11 +371,38 @@ server <- function(input, output, session) {
     }
   })
 
+  # Input Data Table
+  output$input_data <- DT::renderDT({
+    req(rv$metabolite_data)
+    DT::datatable(
+      rv$metabolite_data,
+      options = list(pageLength = 15, scrollX = TRUE),
+      filter = "top",
+      rownames = TRUE
+    )
+  })
+
   # Metabolite Analysis Table
-  output$metab_table <- renderTable({
+  output$metab_table <- DT::renderDT({
     req(rv$metab_status)
-    rv$metab_status
-  }, striped = TRUE, hover = TRUE, bordered = TRUE, rownames = TRUE)
+    DT::datatable(
+      rv$metab_status,
+      options = list(pageLength = 15, scrollX = TRUE),
+      filter = "top",
+      rownames = TRUE
+    )
+  })
+
+  # Pathway Analysis Table
+  output$pwy_table <- DT::renderDT({
+    req(rv$pathway_status)
+    DT::datatable(
+      rv$pathway_status,
+      options = list(pageLength = 15, scrollX = TRUE),
+      filter = "top",
+      rownames = TRUE
+    )
+  })
 
   # Render UI to create plotOutput containers for each dynamic plot
   output$dynamic_network_plots <- renderUI({
@@ -411,7 +444,7 @@ server <- function(input, output, session) {
       return(
         div(
           h3("MetaNetis Internal Reference Ranges"),
-          tableOutput("ref_table_content")
+          DT::DTOutput("ref_table_content")
         )
       )
     } else if (rv$display_mode == "analysis") {
@@ -426,8 +459,14 @@ server <- function(input, output, session) {
       return(
         tabsetPanel(
           id = "analysis_tabs",
+          tabPanel("Input Data", icon = icon("list-ol"),
+                   div(style = "margin-top: 20px; overflow-x: auto;", DT::DTOutput("input_data"))
+          ),
           tabPanel("Metabolite Analysis Table", icon = icon("list-ol"),
-                   div(style = "margin-top: 20px; overflow-x: auto;", tableOutput("metab_table"))
+                   div(style = "margin-top: 20px; overflow-x: auto;", DT::DTOutput("metab_table"))
+          ),
+          tabPanel("Pathway Analysis Table", icon = icon("list-ol"),
+                   div(style = "margin-top: 20px; overflow-x: auto;", DT::DTOutput("pwy_table"))
           ),
           tabPanel("Metabolite Network Plot", icon = icon("project-diagram"),
                    div(style = "margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;",

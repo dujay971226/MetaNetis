@@ -27,18 +27,27 @@
 #' in the package's data directory. If it does, that dataset is loaded and returned.
 #' Otherwise, the default `reference_ranges_df` included in the package is returned.
 #'
-#' @return Returns an the 'ref_df' data frame to the user. Includes the following columns:
+#' @return Returns an the 'ref_df' data frame to the user. Includes the
+#' following columns:
 #' \itemize{
 #'   \item \code{HMDB_ID}: Unique identifier of the metabolite.
 #'   \item \code{Metabolite_Name}: Common name of the metabolite.
-#'   \item \code{Sample_Type}: Standardized biological fluid type (e.g., Blood/Serum/Plasma, CSF, Urine).
-#'   \item \code{Subject_Age_Description}: The original age group description from the HMDB dataset.
-#'   \item \code{Min_Age(year)}: Minimum age (in years) for the applicable age group.
-#'   \item \code{Max_Age(year)}: Maximum age (in years) for the applicable age group (\code{Inf} for general adult groups).
-#'   \item \code{Min_Concentration(Healthy)}: Minimum concentration observed in healthy individuals within the age group.
-#'   \item \code{Mean_Concentration(Healthy)}: Aggregated average concentration in healthy individuals within the age group.
-#'   \item \code{Max_Concentration(Healthy)}: Maximum concentration observed in healthy individuals within the age group.
-#'   \item \code{Unit}: The unit of measurement for concentration (e.g., uM, umol/mmol creatinine).
+#'   \item \code{Sample_Type}: Standardized biological fluid type
+#'   (e.g., Blood/Serum/Plasma, CSF, Urine).
+#'   \item \code{Subject_Age_Description}: The original age group description
+#'   from the HMDB dataset.
+#'   \item \code{Min_Age(year)}: Minimum age (in years) for the applicable
+#'   age group.
+#'   \item \code{Max_Age(year)}: Maximum age (in years) for the applicable
+#'   age group (\code{Inf} for general adult groups).
+#'   \item \code{Min_Concentration(Healthy)}: Minimum concentration observed
+#'   in healthy individuals within the age group.
+#'   \item \code{Mean_Concentration(Healthy)}: Aggregated average concentration
+#'   in healthy individuals within the age group.
+#'   \item \code{Max_Concentration(Healthy)}: Maximum concentration observed
+#'   in healthy individuals within the age group.
+#'   \item \code{Unit}: The unit of measurement for concentration
+#'   (e.g., uM, umol/mmol creatinine).
 #' }
 #'
 #' @examples
@@ -51,10 +60,12 @@
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+#' \href{https://hmdb.ca/}{HMDB}.
 #'
 #' \strong{Debugging Assistance:}
-#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+#' \href{https://gemini.google.com}{Gemini}
 #'
 #' @importFrom utils data
 #' @export
@@ -70,7 +81,7 @@ GetRefRanges <- function() {
   if (file.exists(alt_file)) {
     # Load alternative dataset directly
     load_success <- tryCatch({
-      ref_df <- readRDS(alt_file)  # assuming alt file is saved as .rds for direct object
+      ref_df <- readRDS(alt_file)
       TRUE
     }, error = function(e) {
       FALSE
@@ -78,6 +89,8 @@ GetRefRanges <- function() {
 
     if (!load_success) {
       stop("Failed to load 'alt_ref_ranges.rda'. Please check the file.")
+    } else {
+
     }
 
   } else {
@@ -90,7 +103,11 @@ GetRefRanges <- function() {
     })
 
     if (!load_success) {
-      stop("Failed to load default 'reference_ranges_df'. Please reinstall the MetaNetis package.")
+      stop(
+        "Failed to load default 'reference_ranges_df'.
+        Please reinstall the MetaNetis package.")
+    } else {
+
     }
   }
 

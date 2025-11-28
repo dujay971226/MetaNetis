@@ -7,18 +7,27 @@
 GetRefRanges()
 }
 \value{
-Returns an the 'ref_df' data frame to the user. Includes the following columns:
+Returns an the 'ref_df' data frame to the user. Includes the
+following columns:
 \itemize{
   \item \code{HMDB_ID}: Unique identifier of the metabolite.
   \item \code{Metabolite_Name}: Common name of the metabolite.
-  \item \code{Sample_Type}: Standardized biological fluid type (e.g., Blood/Serum/Plasma, CSF, Urine).
-  \item \code{Subject_Age_Description}: The original age group description from the HMDB dataset.
-  \item \code{Min_Age(year)}: Minimum age (in years) for the applicable age group.
-  \item \code{Max_Age(year)}: Maximum age (in years) for the applicable age group (\code{Inf} for general adult groups).
-  \item \code{Min_Concentration(Healthy)}: Minimum concentration observed in healthy individuals within the age group.
-  \item \code{Mean_Concentration(Healthy)}: Aggregated average concentration in healthy individuals within the age group.
-  \item \code{Max_Concentration(Healthy)}: Maximum concentration observed in healthy individuals within the age group.
-  \item \code{Unit}: The unit of measurement for concentration (e.g., uM, umol/mmol creatinine).
+  \item \code{Sample_Type}: Standardized biological fluid type
+  (e.g., Blood/Serum/Plasma, CSF, Urine).
+  \item \code{Subject_Age_Description}: The original age group description
+  from the HMDB dataset.
+  \item \code{Min_Age(year)}: Minimum age (in years) for the applicable
+  age group.
+  \item \code{Max_Age(year)}: Maximum age (in years) for the applicable
+  age group (\code{Inf} for general adult groups).
+  \item \code{Min_Concentration(Healthy)}: Minimum concentration observed
+  in healthy individuals within the age group.
+  \item \code{Mean_Concentration(Healthy)}: Aggregated average concentration
+  in healthy individuals within the age group.
+  \item \code{Max_Concentration(Healthy)}: Maximum concentration observed
+  in healthy individuals within the age group.
+  \item \code{Unit}: The unit of measurement for concentration
+  (e.g., uM, umol/mmol creatinine).
 }
 }
 \description{
@@ -57,10 +66,12 @@ head(ref_df)
 \references{
 \strong{HMDB Metabolite Reference Data}:
 Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+\href{https://hmdb.ca/}{HMDB}.
 
 \strong{Debugging Assistance:}
-Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+\href{https://gemini.google.com}{Gemini}
 }
 \author{
 Yunze Du, \email{yunze.du@mail.utoronto.ca}

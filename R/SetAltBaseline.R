@@ -56,10 +56,12 @@
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+#' \href{https://hmdb.ca/}{HMDB}.
 #'
 #' \strong{Debugging Assistance:}
-#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+#' \href{https://gemini.google.com}{Gemini}
 #'
 #' @importFrom utils data
 #' @export
@@ -73,11 +75,15 @@ SetAltBaseline <- function(data_source = NULL) {
   if (is.null(data_source)) {
     if (file.exists(alt_file)) {
       file.remove(alt_file)
-      message("Alternative reference ranges removed. Using default package reference data.")
+      message("Alternative reference ranges removed. Using default package
+              reference data.")
     } else {
-      message("No alternative reference ranges exist. Default package reference data will be used.")
+      message("No alternative reference ranges exist. Default package reference
+              data will be used.")
     }
     return(invisible(NULL))
+  } else {
+
   }
 
   # 2. Validate new data
@@ -93,6 +99,8 @@ SetAltBaseline <- function(data_source = NULL) {
     csv_path <- data_source
     if (!file.exists(csv_path)) {
       stop(paste("Error: File not found at path:", csv_path))
+    } else {
+
     }
 
     new_baseline_df <- tryCatch({
@@ -101,7 +109,8 @@ SetAltBaseline <- function(data_source = NULL) {
       stop(paste("Failed to read CSV file:", e$message))
     })
 
-    message(paste("Successfully loaded alternative reference ranges from file:", csv_path))
+    message(paste("Successfully loaded alternative reference ranges from file:",
+                  csv_path))
 
   } else if (is.data.frame(data_source)) {
     # Case 2. Input is a data frame
@@ -110,21 +119,26 @@ SetAltBaseline <- function(data_source = NULL) {
 
   } else {
     # Case 3. Invalid input type
-    stop("Error: 'data_source' must be a valid csv file path (character) or a data frame (data.frame).")
+    stop("Error: 'data_source' must be a valid csv file path (character) or
+         a data frame (data.frame).")
   }
 
   # Sanity check: if the new data frame is empty
   if (is.null(new_baseline_df) || nrow(new_baseline_df) == 0) {
     stop("The provided data source resulted in an empty or invalid data frame.")
+  } else {
+
   }
 
   # Sanity check: Do the column names matches
   if (!all(required_cols %in% names(new_baseline_df))) {
     missing_cols <- setdiff(required_cols, names(new_baseline_df))
     stop(paste0(
-      "Error: The alternative baseline data frame is missing required columns. Missing: ",
-      paste(missing_cols, collapse = ", ")
+      "Error: The alternative baseline data frame is missing required columns.
+      Missing: ", paste(missing_cols, collapse = ", ")
     ))
+  } else {
+
   }
 
   # 3. In case the order is messed up
@@ -132,7 +146,9 @@ SetAltBaseline <- function(data_source = NULL) {
 
   # 4. Save the validated data as alt_ref_ranges.rda
   saveRDS(new_baseline_df, file = alt_file)
-  message("Alternative reference ranges have been saved as 'alt_ref_ranges.rda' and will override the default when using GetRefRanges().")
+  message("Alternative reference ranges have been saved as 'alt_ref_ranges.rda'
+          and will override the default when using GetRefRanges().")
+  return(invisible(NULL))
 
 }
 

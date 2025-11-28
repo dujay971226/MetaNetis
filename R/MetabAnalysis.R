@@ -11,29 +11,32 @@
 #' @param data_input A data frame or a character string representing the file path
 #'   to a CSV file containing metabolite concentrations. 1st row must represent
 #'   individual samples, and \strong{1st column must be the metabolite identifiers
-#'   (HMDB IDs or Metabolite Names)}. If names were used instead of IDS, please make sure
-#'   they match the reference data's name(obtained by GetRefRanges()).
-#'   Columns represent samples.
+#'   (HMDB IDs or Metabolite Names)}. If names were used instead of IDS,
+#'   please make sure they match the reference data's name
+#'   (obtained by GetRefRanges()). Columns represent samples.
 #' @param age A numeric vector where each element represents the age (in years)
 #'   for the corresponding sample column in \code{data_input}. The length of this
 #'   vector must match the number of sample columns.
-#' @param sample_type A character vector specifying the biospecimen type for each sample.
-#'   The length of this vector must match the number of samples.
+#' @param sample_type A character vector specifying the biospecimen type for
+#'   each sample. The length of this vector must match the number of samples.
 #'   (e.g., \code{"Blood/Serum/Plasma"}, \code{"Urine"}, \code{"CSF"}).
 #' @param match_by A character string indicating whether the \strong{row names} in
 #'   \code{data_input} represent "HMDB_ID" (default) or "Metabolite_Name". Default
 #'   set to be "HMDB_ID".
-#' @param ref_data_override An optional data frame to use as the reference, bypassing the \code{GetRefRanges()} call.
+#' @param ref_data_override An optional data frame to use as the reference,
+#'   bypassing the \code{GetRefRanges()} call.
 #'
 #' @details
 #' This function assumes the user data has been formatted so that metabolite
 #' identifiers are used as \strong{row names} and all column values are numeric
 #' concentrations for different samples. The function uses the \code{match_by}
-#' parameter to determine which column in the reference table to match the row names against.
+#' parameter to determine which column in the reference table to match the row
+#' names against.
 #'
 #' **Required Structure of \code{data_input}:**
 #' \itemize{
-#'   \item **Row Names:** Must be HMDB IDs (e.g., "HMDB0000001") or Metabolite Names (e.g., "Alanine").
+#'   \item **Row Names:** Must be HMDB IDs (e.g., "HMDB0000001") or
+#'    Metabolite Names (e.g., "Alanine").
 #'   \item **Columns:** Must be numeric concentration values for each sample.
 #' }
 #'
@@ -99,10 +102,12 @@
 #' @references
 #' \strong{HMDB Metabolite Reference Data}:
 #' Wishart, D. S., et al. (2022). HMDB 5.0: The Human Metabolome Database for 2022.
-#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from \href{https://hmdb.ca/}{HMDB}.
+#' Nucleic Acids Research, 50(D1), D1-D10. Retrieved from
+#' \href{https://hmdb.ca/}{HMDB}.
 #'
 #' \strong{Debugging Assistance:}
-#' Google. (2025). Gemini (v 2.0 Flash) [Large language model]. \href{https://gemini.google.com}{Gemini}
+#' Google. (2025). Gemini (v 2.0 Flash) [Large language model].
+#' \href{https://gemini.google.com}{Gemini}
 #'
 #' @importFrom utils read.csv
 #' @export
@@ -123,14 +128,19 @@ MetabAnalysis <- function(data_input = NULL,
 
   # Confirm ref_df was loaded successfully
   if (is.null(ref_df) || nrow(ref_df) == 0) {
-    stop("Failed to retrieve or load reference ranges. Cannot perform MetabAnalysis.")
+    stop(
+      "Failed to retrieve or load reference ranges. Cannot perform MetabAnalysis.")
+  } else {
+
   }
 
   # 2. Load User Data
   user_df <- NULL
   # Load from CSV
   if (is.character(data_input) && file.exists(data_input)) {
-    user_df <- utils::read.csv(data_input, stringsAsFactors = FALSE, check.names = FALSE)
+    user_df <- utils::read.csv(data_input,
+                               stringsAsFactors = FALSE,
+                               check.names = FALSE)
 
     # Convert first row to column names and first column to row names ----
     if (!is.null(user_df) && nrow(user_df) > 1 && ncol(user_df) > 1) {
@@ -148,6 +158,8 @@ MetabAnalysis <- function(data_input = NULL,
 
       # Remove the first column
       user_df <- user_df[, -1, drop = FALSE]
+    } else {
+
     }
 
   } else if (is.data.frame(data_input)) {
@@ -163,16 +175,22 @@ MetabAnalysis <- function(data_input = NULL,
   # Ensure all columns are numeric (concentration data)
   conc_data <- user_df
   if (!all(sapply(conc_data, is.numeric))) {
-    warning("Non-numeric columns detected in concentration data. Attempting to convert to numeric.")
+    warning("Non-numeric columns detected in concentration data.
+            Attempting to convert to numeric.")
     conc_data <- as.data.frame(lapply(conc_data, function(x) {
       if (!is.numeric(x)) as.numeric(as.character(x)) else x
     }))
+  } else {
+
   }
 
   # Extract metabolite identifiers (row names)
   metab_ids <- row.names(conc_data)
   if (is.null(metab_ids) || length(metab_ids) == 0) {
-    stop("Metabolite ID/names are missing. Data frame must have row names set (or the first column must be identifiers if loading from CSV with row.names = 1).")
+    stop("Metabolite ID/names are missing. Data frame must have row names set
+         (or the first column must be identifiers if loading from CSV with row.names = 1).")
+  } else {
+
   }
 
   # Define which column in ref_df to match against (HMDB_ID or Metabolite_Name)
@@ -186,6 +204,8 @@ MetabAnalysis <- function(data_input = NULL,
                 ") matches the number of sample columns (",
                 num_samples,
                 ")."))
+  } else {
+
   }
 
   # If sample_type is a single string, recycle it to the needed length
@@ -198,6 +218,8 @@ MetabAnalysis <- function(data_input = NULL,
                 ") matches the number of sample columns (",
                 num_samples,
                 ")."))
+  } else {
+
   }
 
   # Load corresponding ref column and convert to string
@@ -210,13 +232,18 @@ MetabAnalysis <- function(data_input = NULL,
   if (length(metab_ids) == length(missing_ids)) {
     stop(paste("None of the user's metabolite identifiers (row names) were found in the",
                match_ref_col, "column of the reference data. Analysis cannot proceed."))
+  } else {
+
   }
 
   if (length(missing_ids) > 0) {
     # If some are missing, print a warning with the list
     warning(paste(length(missing_ids), "of", length(metab_ids),
-                  "metabolites could not be matched in the reference database and will be classified as 'Missing Reference':\n",
+                  "metabolites could not be matched in the reference database
+                  and will be classified as 'Missing Reference':\n",
                   paste(missing_ids, collapse = ", ")))
+  } else {
+
   }
 
   # Initialize the results data frame with all Missing Reference
@@ -245,6 +272,8 @@ MetabAnalysis <- function(data_input = NULL,
       warning(paste("No reference ranges found for age", current_age,
                     "for sample", sample_name, ". Classifying as 'Missing Reference'."))
       next
+    } else {
+
     }
 
     for (i in seq_len(nrow(conc_data))) {
@@ -269,6 +298,8 @@ MetabAnalysis <- function(data_input = NULL,
           warning(paste("Multiple reference ranges found for metabolite name containing '",
                         metab_id, "'. Using the first match for sample ", sample_name, "."))
           metab_ref <- metab_ref[1, ]
+        } else {
+
         }
 
       } else {
@@ -292,6 +323,8 @@ MetabAnalysis <- function(data_input = NULL,
         } else {
           classification <- "Normal"
         }
+      } else {
+
       }
 
       # Assign classification to the results data frame

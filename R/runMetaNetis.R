@@ -16,15 +16,15 @@
 #' @author Yunze Du, \email{yunze.du@mail.utoronto.ca}
 #'
 #' @references
-#' Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
+#' Grolemund, G. (2015). Learn Shiny - Video Tutorials.
+#' \href{https://shiny.rstudio.com/tutorial/}{Link}
 #'
 #' @export
+#' @import DT
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom shiny runApp
-#' @importFrom shinyjs useShinyjs
-#' @importFrom shinyjs toggle
-#' @importFrom shinyjs runjs
+#' @importFrom shinyjs useShinyjs toggle runjs
 #' @importFrom shinyWidgets switchInput
 
 runMetaNetis <- function() {
