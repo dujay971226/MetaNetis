@@ -32,7 +32,7 @@ You can install the development version of MetaNetis from
 ``` r
 install.packages("devtools")
 library("devtools")
-devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
+devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE, dependencies = TRUE)
 library("MetaNetis")
 ```
 

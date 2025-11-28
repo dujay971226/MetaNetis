@@ -71,7 +71,7 @@ To download **MetaNetis**, follow the following commands:
 
 ```{r}
 require("devtools")
-devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE)
+devtools::install_github("dujay971226/MetaNetis", build_vignettes = TRUE, dependencies = TRUE)
 library("MetaNetis")
 ```
 
