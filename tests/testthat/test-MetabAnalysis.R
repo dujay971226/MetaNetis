@@ -9,14 +9,13 @@ test_that(
     'Min_Age(year)' = c(0, 0, 0),
     'Max_Age(year)' = c(99, 99, 99),
     'Min_Concentration(Healthy)' = c(500, 4.0, 50),
-    'Mean_Concentration(Healthy)' = c(750, 5.5, 75),
     'Max_Concentration(Healthy)' = c(1000, 7.0, 100),
     'Unit' = c("uM", "uM", "uM"),
     stringsAsFactors = FALSE,
     check.names = FALSE
   )
 
-  SetAltBaseline(mock_ref)
+  MetaNetis::SetAltBaseline(mock_ref)
 
   # User data with known concentrations
   user_data <- data.frame(
@@ -29,7 +28,7 @@ test_that(
   sample_type_vector <- c("Urine", "Plasma")
 
   # Test HMDB_ID matching
-  results_id <- MetabAnalysis(
+  results_id <- MetaNetis::MetabAnalysis(
     data_input = user_data,
     age = age_vector,
     sample_type = sample_type_vector,
@@ -53,7 +52,7 @@ test_that(
   user_data_name <- user_data
   row.names(user_data_name) <- c("Alanine", "Glucose", "Creatinine")
 
-  results_name <- MetabAnalysis(
+  results_name <- MetaNetis::MetabAnalysis(
     data_input = user_data_name,
     age = age_vector,
     sample_type = sample_type_vector,
@@ -71,6 +70,6 @@ test_that(
   expect_equal(results_name, expected_name)
 
   # Set back to default reference ranges
-  SetAltBaseline()
+  MetaNetis::SetAltBaseline()
 
 })
