@@ -81,7 +81,6 @@ PlotNetwork <- function(result, sample_id) {
 
   # 1. Filter to the chosen sample
   df <- result %>%
-    dplyr::filter(Net_Score != 0) %>%
     dplyr::filter(Sample_ID == sample_id) %>%
     dplyr::select(Pathway_Name, Net_Score)
 
